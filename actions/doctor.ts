@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { createClient } from '@/utils/supabase/server'
+import type { Database } from '@/types/database'
 
 export async function getAllPatients() {
     const supabase = await createClient()
@@ -47,11 +48,14 @@ export async function createPatient(formData: FormData) {
     // Update profile (trigger already created it with default values)
     // The database trigger handle_new_user automatically creates a profile row
     // when a new user is created, so we just need to update it with the full_name
+    const updateData: Database['public']['Tables']['profiles']['Update'] = {
+        full_name: fullName,
+    }
+
     const { error: profileError } = await adminSupabase
         .from('profiles')
-        .update({
-            full_name: fullName,
-        })
+        // @ts-expect-error - Supabase admin client has type inference issues with Database generic
+        .update(updateData)
         .eq('id', authData.user.id)
 
     if (profileError) {
