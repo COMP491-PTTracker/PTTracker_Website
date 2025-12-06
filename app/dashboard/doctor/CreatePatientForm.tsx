@@ -2,6 +2,7 @@
 
 import { createPatient } from '@/actions/doctor'
 import { useState } from 'react'
+import { UserPlus, X, Mail, Lock, User } from 'lucide-react'
 
 export default function CreatePatientForm() {
     const [isOpen, setIsOpen] = useState(false)
@@ -32,39 +33,48 @@ export default function CreatePatientForm() {
 
     return (
         <>
-            <button onClick={() => setIsOpen(true)} className="btn-secondary">
-                + Create New Patient
+            <button onClick={() => setIsOpen(true)} className="dark-btn-secondary flex items-center gap-2">
+                <UserPlus className="w-5 h-5" />
+                Create New Patient
             </button>
 
             {isOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-xl max-w-md w-full p-8 shadow-2xl">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="dark-card max-w-md w-full">
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-2xl font-bold text-gray-900">Create New Patient</h2>
+                            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center">
+                                    <UserPlus className="w-6 h-6 text-white" />
+                                </div>
+                                Create New Patient
+                            </h2>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="text-gray-400 hover:text-gray-600 text-2xl"
+                                className="text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800/50 rounded-lg"
                                 disabled={loading}
                             >
-                                ×
+                                <X className="w-6 h-6" />
                             </button>
                         </div>
 
                         {error && (
-                            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700">
-                                {error}
+                            <div className="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-start gap-3">
+                                <div className="text-red-500 mt-0.5">⚠</div>
+                                <div>{error}</div>
                             </div>
                         )}
 
                         {success && (
-                            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-xl text-green-700">
-                                Patient created successfully!
+                            <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-start gap-3">
+                                <div className="text-green-500 mt-0.5">✓</div>
+                                <div>Patient created successfully!</div>
                             </div>
                         )}
 
                         <form action={handleSubmit} className="space-y-5">
                             <div>
-                                <label htmlFor="full_name" className="label">
+                                <label htmlFor="full_name" className="dark-label flex items-center gap-2">
+                                    <User className="w-5 h-5 text-primary-400" />
                                     Full Name
                                 </label>
                                 <input
@@ -72,14 +82,15 @@ export default function CreatePatientForm() {
                                     name="full_name"
                                     type="text"
                                     required
-                                    className="input-field"
+                                    className="dark-input"
                                     placeholder="John Doe"
                                     disabled={loading}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="email" className="label">
+                                <label htmlFor="email" className="dark-label flex items-center gap-2">
+                                    <Mail className="w-5 h-5 text-primary-400" />
                                     Email Address
                                 </label>
                                 <input
@@ -87,14 +98,15 @@ export default function CreatePatientForm() {
                                     name="email"
                                     type="email"
                                     required
-                                    className="input-field"
+                                    className="dark-input"
                                     placeholder="patient@example.com"
                                     disabled={loading}
                                 />
                             </div>
 
                             <div>
-                                <label htmlFor="password" className="label">
+                                <label htmlFor="password" className="dark-label flex items-center gap-2">
+                                    <Lock className="w-5 h-5 text-primary-400" />
                                     Password
                                 </label>
                                 <input
@@ -103,7 +115,7 @@ export default function CreatePatientForm() {
                                     type="password"
                                     required
                                     minLength={6}
-                                    className="input-field"
+                                    className="dark-input"
                                     placeholder="••••••••"
                                     disabled={loading}
                                 />
@@ -114,14 +126,14 @@ export default function CreatePatientForm() {
                                 <button
                                     type="button"
                                     onClick={() => setIsOpen(false)}
-                                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-semibold rounded-xl hover:bg-gray-50"
+                                    className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 font-semibold rounded-xl hover:bg-gray-800/50 transition-all"
                                     disabled={loading}
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="flex-1 dark-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={loading}
                                 >
                                     {loading ? 'Creating...' : 'Create Patient'}

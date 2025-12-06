@@ -7,73 +7,73 @@ Building a Next.js 14+ frontend for a Physical Therapy tracking system with Supa
 
 ## STEP 0: Initialization
 - [x] Create PROGRESS.md file
-- [ ] Confirm .env variables with user
+- [x] Confirm .env variables with user
 
 ---
 
-## STEP 1: Configuration
-- [ ] Create `.env.local` file with required variables
-- [ ] Create `utils/supabase/client.ts` (Browser client)
-- [ ] Create `utils/supabase/server.ts` (Server client for Actions/SSR)
-- [ ] Create `utils/supabase/admin.ts` (Admin client using service_role key)
-- [ ] Create TypeScript types for database schema (`types/database.ts`)
+## STEP 1: Configuration ✅
+- [x] Create `.env.local` file with required variables
+- [x] Create `utils/supabase/client.ts` (Browser client)
+- [x] Create `utils/supabase/server.ts` (Server client for Actions/SSR)
+- [x] Create `utils/supabase/admin.ts` (Admin client using service_role key)
+- [x] Create TypeScript types for database schema (`types/database.ts`)
 
 ---
 
-## STEP 2: Middleware
-- [ ] Implement `middleware.ts` for route protection
-- [ ] Ensure role-based redirects work correctly
-  - [ ] Admin → `/dashboard/doctor`
-  - [ ] Patient → `/dashboard/patient`
-- [ ] Prevent patients from accessing `/dashboard/doctor`
+## STEP 2: Middleware ✅
+- [x] Implement `middleware.ts` for route protection
+- [x] Ensure role-based redirects work correctly
+  - [x] Admin → `/dashboard/doctor`
+  - [x] Patient → `/dashboard/patient`
+- [x] Prevent patients from accessing `/dashboard/doctor`
 
 ---
 
-## STEP 3: Server Actions
-- [ ] Create `actions/auth.ts`
-  - [ ] Login action with role-based redirect
-  - [ ] Logout action
-- [ ] Create `actions/doctor.ts`
-  - [ ] Create patient action (using service_role key to avoid logout)
-  - [ ] Fetch all patients action
+## STEP 3: Server Actions ✅
+- [x] Create `actions/auth.ts`
+  - [x] Login action with role-based redirect
+  - [x] Logout action
+- [x] Create `actions/doctor.ts`
+  - [x] Create patient action (using service_role key to avoid logout)
+  - [x] Fetch all patients action
 
 ---
 
-## STEP 4: UI Implementation
+## STEP 4: UI Implementation ✅
 
 ### Landing & Auth Pages
-- [ ] Create landing page (`app/page.tsx`)
-  - [ ] Hero section with project introduction
-  - [ ] "Sign In" button
-- [ ] Create login page (`app/login/page.tsx`)
-  - [ ] Email/Password form
-  - [ ] Form validation
-  - [ ] Apply "Friendly Rehab" design system
+- [x] Create landing page (`app/page.tsx`)
+  - [x] Hero section with project introduction
+  - [x] "Sign In" button
+- [x] Create login page (`app/login/page.tsx`)
+  - [x] Email/Password form
+  - [x] Form validation
+  - [x] Apply "Friendly Rehab" design system
 
 ### Patient Dashboard
-- [ ] Create patient dashboard (`app/dashboard/patient/page.tsx`)
-  - [ ] Fetch exercise logs for logged-in user
-  - [ ] Display logs in a table (Date, Exercise, Score, Duration)
-  - [ ] Format dates as DD/MM/YYYY
-  - [ ] Sort by date (newest first)
-  - [ ] Apply Emerald/Orange theme
+- [x] Create patient dashboard (`app/dashboard/patient/page.tsx`)
+  - [x] Fetch exercise logs for logged-in user
+  - [x] Display logs in a table (Date, Exercise, Score, Duration)
+  - [x] Format dates as DD/MM/YYYY
+  - [x] Sort by date (newest first)
+  - [x] Apply Emerald/Orange theme
 
 ### Doctor Dashboard
-- [ ] Create doctor dashboard (`app/dashboard/doctor/page.tsx`)
-  - [ ] Fetch all patients (role === 'patient')
-  - [ ] Display patients in card grid/list
-  - [ ] Create Patient form
-    - [ ] Email input
-    - [ ] Password input
-    - [ ] Full Name input
-    - [ ] Form validation
-  - [ ] Apply theme styling
+- [x] Create doctor dashboard (`app/dashboard/doctor/page.tsx`)
+  - [x] Fetch all patients (role === 'patient')
+  - [x] Display patients in card grid/list
+  - [x] Create Patient form
+    - [x] Email input
+    - [x] Password input
+    - [x] Full Name input
+    - [x] Form validation
+  - [x] Apply theme styling
 
 ### Patient Detail View
-- [ ] Create patient detail page (`app/dashboard/doctor/patient/[id]/page.tsx`)
-  - [ ] Fetch exercise logs for specific patient
-  - [ ] Display in table format
-  - [ ] Same columns and sorting as patient dashboard
+- [x] Create patient detail page (`app/dashboard/doctor/patient/[id]/page.tsx`)
+  - [x] Fetch exercise logs for specific patient
+  - [x] Display in table format
+  - [x] Same columns and sorting as patient dashboard
 
 ---
 
