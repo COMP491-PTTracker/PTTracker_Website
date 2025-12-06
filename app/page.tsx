@@ -94,7 +94,7 @@ export default function HomePage() {
                     </h1>
 
                     <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-                        Scale your clinic's reach and reduce costs. Free up physical therapists for complex cases
+                        Scale your clinic&apos;s reach and reduce costs. Free up physical therapists for complex cases
                         by automating routine feedback with AI-powered motion tracking.
                     </p>
 
