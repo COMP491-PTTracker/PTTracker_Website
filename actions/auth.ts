@@ -25,7 +25,7 @@ export async function login(formData: FormData) {
 
     if (user) {
         const { data: profile } = await supabase
-            .from('profiles')
+            .from('users')
             .select('role')
             .eq('id', user.id)
             .single()
@@ -59,7 +59,7 @@ export async function getCurrentUser() {
     }
 
     const { data: profile } = await supabase
-        .from('profiles')
+        .from('users')
         .select('*')
         .eq('id', user.id)
         .single()
