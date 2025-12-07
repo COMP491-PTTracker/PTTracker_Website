@@ -63,11 +63,13 @@ export default async function DoctorDashboard() {
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-4">
                                             <div className="w-14 h-14 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-2xl font-bold text-primary-400 border border-primary-500/20">
-                                                {patient.full_name?.charAt(0) || '?'}
+                                                {patient.first_name?.charAt(0) || '?'}
                                             </div>
                                             <div className="flex-1">
                                                 <h3 className="text-xl font-semibold text-white group-hover:text-primary-400 transition-colors">
-                                                    {patient.full_name || 'Unnamed Patient'}
+                                                    {patient.first_name && patient.last_name
+                                                        ? `${patient.first_name} ${patient.last_name}`
+                                                        : 'Unnamed Patient'}
                                                 </h3>
                                                 <p className="text-gray-500 text-sm truncate">{patient.email}</p>
                                             </div>
@@ -86,8 +88,7 @@ export default async function DoctorDashboard() {
                             <UserPlus className="w-10 h-10 text-primary-400" />
                         </div>
                         <h3 className="text-2xl font-semibold text-white mb-2">No Patients Yet</h3>
-                        <p className="text-gray-400 text-lg mb-6">Create your first patient to get started</p>
-                        <CreatePatientForm />
+                        <p className="text-gray-400 text-lg mb-6">Create your first patient using the button above</p>
                     </div>
                 )}
             </main>

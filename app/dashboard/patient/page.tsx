@@ -30,7 +30,7 @@ export default async function PatientDashboard() {
                             </div>
                             My Exercise Logs
                         </h1>
-                        <p className="text-gray-400 text-lg mt-1 ml-13">Welcome back, {user.full_name}!</p>
+                        <p className="text-gray-400 text-lg mt-1 ml-13">Welcome back, {user.first_name}!</p>
                     </div>
                     <form action={logout}>
                         <button type="submit" className="dark-btn-secondary flex items-center gap-2">

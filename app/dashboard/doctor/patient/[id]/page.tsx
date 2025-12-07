@@ -21,7 +21,7 @@ export default async function PatientDetailPage({
 
     // Get patient info
     const { data: patient } = await supabase
-        .from('profiles')
+        .from('users')
         .select('*')
         .eq('id', id)
         .single()
@@ -47,10 +47,14 @@ export default async function PatientDetailPage({
                     </Link>
                     <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-3xl font-bold text-primary-400 border border-primary-500/20">
-                            {patient.full_name?.charAt(0) || '?'}
+                            {patient.first_name?.charAt(0) || '?'}
                         </div>
                         <div>
-                            <h1 className="text-3xl font-bold text-white">{patient.full_name || 'Unnamed Patient'}</h1>
+                            <h1 className="text-3xl font-bold text-white">
+                                {patient.first_name && patient.last_name
+                                    ? `${patient.first_name} ${patient.last_name}`
+                                    : 'Unnamed Patient'}
+                            </h1>
                             <p className="text-gray-400 text-lg mt-1">{patient.email}</p>
                         </div>
                     </div>
