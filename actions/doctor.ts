@@ -79,9 +79,9 @@ export async function createPatient(formData: FormData) {
 
     // Update the user record with additional fields
     // The auth.users record is automatically created by createUser above
-    // @ts-ignore - Supabase type inference issue with auth.users table
     const { error: userError } = await adminSupabase
         .from('users')
+        // @ts-expect-error - Supabase type inference issue with auth.users table
         .update({
             role: 'patient',
             first_name: firstName,
