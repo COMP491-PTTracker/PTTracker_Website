@@ -1,9 +1,9 @@
 import { getCurrentUser, logout } from '@/actions/auth'
 import { getAllPatients } from '@/actions/doctor'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import CreatePatientForm from './CreatePatientForm'
-import { Users, LogOut, ArrowRight, UserPlus } from 'lucide-react'
+import PatientCard from './PatientCard'
+import { Users, LogOut, UserPlus } from 'lucide-react'
 
 export default async function DoctorDashboard() {
     const user = await getCurrentUser()
@@ -28,17 +28,37 @@ export default async function DoctorDashboard() {
                         </h1>
                         <p className="text-gray-400 text-lg mt-1 ml-13">Manage your patients and monitor progress</p>
                     </div>
-                    <form action={logout}>
-                        <button type="submit" className="dark-btn-secondary flex items-center gap-2">
-                            <LogOut className="w-5 h-5" />
-                            Sign Out
-                        </button>
-                    </form>
+                    <div className="flex items-center gap-4">
+                        {/* Doctor Profile Block */}
+                        <div className="flex items-center gap-3 bg-gray-800/50 rounded-lg px-4 py-2 border border-gray-700">
+                            <div className="w-10 h-10 bg-gradient-to-br from-primary-500/30 to-secondary-500/30 rounded-lg flex items-center justify-center border border-primary-500/30">
+                                <span className="text-lg font-bold text-primary-400">
+                                    {user.first_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase() || '?'}
+                                </span>
+                            </div>
+                            <div>
+                                <p className="text-sm font-medium text-white">
+                                    {user.first_name && user.last_name
+                                        ? `Dr. ${user.first_name} ${user.last_name}`
+                                        : 'Doctor'}
+                                </p>
+                                <p className="text-xs text-gray-400">{user.email}</p>
+                            </div>
+                        </div>
+                        <form action={logout}>
+                            <button type="submit" className="dark-btn-secondary flex items-center gap-2">
+                                <LogOut className="w-5 h-5" />
+                                Sign Out
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </header>
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-6 py-8">
+
+                {/* Patients Section */}
                 <div className="flex justify-between items-center mb-8">
                     <div>
                         <h2 className="text-2xl font-semibold text-white flex items-center gap-3">
@@ -54,32 +74,7 @@ export default async function DoctorDashboard() {
                 {patients.length > 0 ? (
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {patients.map((patient) => (
-                            <Link
-                                key={patient.id}
-                                href={`/dashboard/doctor/patient/${patient.id}`}
-                                className="group dark-card hover:shadow-2xl hover:shadow-primary-500/10"
-                            >
-                                <div className="flex items-start justify-between">
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <div className="w-14 h-14 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-2xl font-bold text-primary-400 border border-primary-500/20">
-                                                {patient.first_name?.charAt(0) || '?'}
-                                            </div>
-                                            <div className="flex-1">
-                                                <h3 className="text-xl font-semibold text-white group-hover:text-primary-400 transition-colors">
-                                                    {patient.first_name && patient.last_name
-                                                        ? `${patient.first_name} ${patient.last_name}`
-                                                        : 'Unnamed Patient'}
-                                                </h3>
-                                                <p className="text-gray-500 text-sm truncate">{patient.email}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="text-primary-400 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
-                                        <ArrowRight className="w-6 h-6" />
-                                    </div>
-                                </div>
-                            </Link>
+                            <PatientCard key={patient.id} patient={patient} />
                         ))}
                     </div>
                 ) : (

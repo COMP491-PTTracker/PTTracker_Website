@@ -30,6 +30,25 @@ export default async function PatientDetailPage({
         redirect('/dashboard/doctor')
     }
 
+    // Get patient record to find patient_id for streak lookup
+    const { data: patientRecord } = await supabase
+        .from('patients')
+        .select('id')
+        .eq('user_id', id)
+        .single()
+
+    // Get patient's current streak
+    let currentStreak = 0
+    if (patientRecord) {
+        const { data: streakData } = await supabase
+            .from('streaks')
+            .select('current_streak')
+            .eq('patient_id', patientRecord.id)
+            .single()
+
+        currentStreak = streakData?.current_streak || 0
+    }
+
     // Get patient's exercise results
     const logs = await getPatientExerciseLogs(id)
 
@@ -45,17 +64,27 @@ export default async function PatientDetailPage({
                         <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
                         Back to Dashboard
                     </Link>
-                    <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-3xl font-bold text-primary-400 border border-primary-500/20">
-                            {patient.first_name?.charAt(0) || '?'}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                            <div className="w-16 h-16 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-3xl font-bold text-primary-400 border border-primary-500/20">
+                                {patient.first_name?.charAt(0) || '?'}
+                            </div>
+                            <div>
+                                <h1 className="text-3xl font-bold text-white">
+                                    {patient.first_name && patient.last_name
+                                        ? `${patient.first_name} ${patient.last_name}`
+                                        : 'Unnamed Patient'}
+                                </h1>
+                                <p className="text-gray-400 text-lg mt-1">{patient.email}</p>
+                            </div>
                         </div>
-                        <div>
-                            <h1 className="text-3xl font-bold text-white">
-                                {patient.first_name && patient.last_name
-                                    ? `${patient.first_name} ${patient.last_name}`
-                                    : 'Unnamed Patient'}
-                            </h1>
-                            <p className="text-gray-400 text-lg mt-1">{patient.email}</p>
+                        {/* Streak Badge */}
+                        <div className="bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30 rounded-xl px-4 py-3 flex items-center gap-3">
+                            <img src="/assets/flame.gif" alt="Streak flame" className="w-10 h-10" />
+                            <div>
+                                <p className="text-orange-400 text-sm font-medium">Current Streak</p>
+                                <p className="text-white text-xl font-bold">{currentStreak} Days</p>
+                            </div>
                         </div>
                     </div>
                 </div>

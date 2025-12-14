@@ -121,6 +121,64 @@ export async function createPatient(formData: FormData) {
     return { success: true }
 }
 
+export async function deletePatient(patientUserId: string) {
+    const adminSupabase = createAdminClient()
+    const supabase = await createClient()
+
+    // Verify the current user is authenticated
+    const {
+        data: { user: currentUser },
+    } = await supabase.auth.getUser()
+
+    if (!currentUser) {
+        return { error: 'Not authenticated' }
+    }
+
+    // Verify the user to delete exists and is a patient
+    const { data: patientUser, error: fetchError } = await adminSupabase
+        .from('users')
+        .select('id, role')
+        .eq('id', patientUserId)
+        .single()
+
+    if (fetchError || !patientUser) {
+        return { error: 'Patient not found' }
+    }
+
+    // @ts-expect-error - Supabase type inference issue
+    if (patientUser.role !== 'patient') {
+        return { error: 'Cannot delete non-patient users' }
+    }
+
+    // Delete from patients table
+    const { error: patientError } = await adminSupabase
+        .from('patients')
+        .delete()
+        .eq('user_id', patientUserId)
+
+    if (patientError) {
+        console.error('Error deleting from patients table:', patientError)
+        return { error: 'Failed to delete patient record: ' + patientError.message }
+    }
+
+    // Delete from auth.users (this allows email to be reused)
+    const { error: authError } = await adminSupabase.auth.admin.deleteUser(patientUserId)
+
+    if (authError) {
+        console.error('Error deleting auth user:', authError)
+        return { error: 'Failed to delete authentication record: ' + authError.message }
+    }
+
+    // Delete from users table (may already be deleted by auth cascade)
+    await adminSupabase
+        .from('users')
+        .delete()
+        .eq('id', patientUserId)
+
+    revalidatePath('/dashboard/doctor')
+    return { success: true }
+}
+
 export async function getPatientExerciseLogs(patientUserId: string) {
     const supabase = await createClient()
 
