@@ -12,16 +12,13 @@ export async function login(formData: FormData) {
         password: formData.get('password') as string,
     }
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+    const { data: signInData, error } = await supabase.auth.signInWithPassword(data)
 
     if (error) {
         return { error: error.message }
     }
 
-    // Get user profile to determine role
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
+    const user = signInData.user
 
     if (user) {
         const { data: profile } = await supabase
@@ -31,7 +28,9 @@ export async function login(formData: FormData) {
             .single()
 
         if (profile) {
-            const redirectPath = profile.role === 'admin' ? '/dashboard/doctor' : '/dashboard/patient'
+            // Redirect doctors/admins to doctor dashboard, patients to patient dashboard
+            const isStaff = profile.role === 'admin' || profile.role === 'doctor'
+            const redirectPath = isStaff ? '/dashboard/doctor' : '/dashboard/patient'
             revalidatePath('/', 'layout')
             redirect(redirectPath)
         }

@@ -95,14 +95,12 @@ export async function createPatient(formData: FormData) {
         return { error: userError.message }
     }
 
-    // Insert into patients table
+    // Insert into patients table (links to auth user via user_id)
     const { error: patientError } = await adminSupabase.from('patients').insert({
-        first_name: firstName,
-        last_name: lastName,
+        user_id: authData.user.id,
         national_id: nationalId,
         pin_code: pinCode,
         birth_date: birthDate || null,
-        email: email,
         phone: phone || null,
         device_id: parseInt(deviceId),
         hospital_id: hospitalId,
@@ -120,19 +118,66 @@ export async function createPatient(formData: FormData) {
     return { success: true }
 }
 
-export async function getPatientExerciseLogs(patientId: string) {
+export async function getPatientExerciseLogs(patientUserId: string) {
     const supabase = await createClient()
 
-    const { data: logs, error } = await supabase
-        .from('exercise_logs')
-        .select('*')
-        .eq('user_id', patientId)
-        .order('created_at', { ascending: false })
+    // First get the patient record for this user
+    const { data: patient } = await supabase
+        .from('patients')
+        .select('id')
+        .eq('user_id', patientUserId)
+        .single()
 
-    if (error) {
-        console.error('Error fetching exercise logs:', error)
+    if (!patient) {
+        console.error('Patient not found for user:', patientUserId)
         return []
     }
 
-    return logs
+    // Get sessions with exercise results for this patient
+    const { data: sessions, error } = await supabase
+        .from('sessions')
+        .select(`
+            id,
+            start_time,
+            end_time,
+            completed,
+            exercise_results (
+                id,
+                total_reps,
+                correct_reps,
+                errors,
+                accuracy,
+                duration_sec,
+                created_at,
+                exercises (
+                    id,
+                    name
+                )
+            )
+        `)
+        .eq('patient_id', patient.id)
+        .order('start_time', { ascending: false })
+
+    if (error) {
+        console.error('Error fetching exercise results:', error)
+        return []
+    }
+
+    // Flatten results for display
+    const results = sessions?.flatMap(session =>
+        (session.exercise_results as any[])?.map(result => ({
+            id: result.id,
+            session_id: session.id,
+            exercise_name: (result.exercises as any)?.name || 'Unknown Exercise',
+            total_reps: result.total_reps,
+            correct_reps: result.correct_reps,
+            errors: result.errors,
+            accuracy: result.accuracy,
+            duration_sec: result.duration_sec,
+            created_at: result.created_at || session.start_time,
+            session_completed: session.completed
+        })) || []
+    ) || []
+
+    return results
 }

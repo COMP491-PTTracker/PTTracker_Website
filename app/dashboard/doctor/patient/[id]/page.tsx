@@ -3,7 +3,7 @@ import { getPatientExerciseLogs } from '@/actions/doctor'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Activity, Calendar, Target, Clock, User } from 'lucide-react'
+import { ArrowLeft, Activity, Calendar, Target, Clock, CheckCircle } from 'lucide-react'
 
 export default async function PatientDetailPage({
     params,
@@ -13,13 +13,13 @@ export default async function PatientDetailPage({
     const { id } = await params
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'admin') {
+    if (!user || (user.role !== 'admin' && user.role !== 'doctor')) {
         redirect('/login')
     }
 
     const supabase = await createClient()
 
-    // Get patient info
+    // Get patient info from users table
     const { data: patient } = await supabase
         .from('users')
         .select('*')
@@ -30,7 +30,7 @@ export default async function PatientDetailPage({
         redirect('/dashboard/doctor')
     }
 
-    // Get patient's exercise logs
+    // Get patient's exercise results
     const logs = await getPatientExerciseLogs(id)
 
     return (
@@ -66,7 +66,7 @@ export default async function PatientDetailPage({
                 <div className="dark-card">
                     <h2 className="text-2xl font-semibold text-white mb-6 flex items-center gap-3">
                         <Activity className="w-7 h-7 text-primary-400" />
-                        Exercise Logs
+                        Exercise Results
                     </h2>
 
                     {logs && logs.length > 0 ? (
@@ -89,13 +89,19 @@ export default async function PatientDetailPage({
                                         <th>
                                             <div className="flex items-center gap-2">
                                                 <Target className="w-5 h-5 text-primary-400" />
-                                                Score
+                                                Reps (Correct/Total)
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle className="w-5 h-5 text-primary-400" />
+                                                Accuracy
                                             </div>
                                         </th>
                                         <th>
                                             <div className="flex items-center gap-2">
                                                 <Clock className="w-5 h-5 text-primary-400" />
-                                                Duration (min)
+                                                Duration
                                             </div>
                                         </th>
                                     </tr>
@@ -113,10 +119,22 @@ export default async function PatientDetailPage({
                                             <td className="text-white font-medium">{log.exercise_name}</td>
                                             <td>
                                                 <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary-500/20 text-primary-400 font-semibold">
-                                                    {log.score}
+                                                    {log.correct_reps}/{log.total_reps}
                                                 </span>
                                             </td>
-                                            <td className="text-gray-300">{log.duration}</td>
+                                            <td>
+                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-semibold ${log.accuracy >= 80
+                                                    ? 'bg-green-500/20 text-green-400'
+                                                    : log.accuracy >= 50
+                                                        ? 'bg-yellow-500/20 text-yellow-400'
+                                                        : 'bg-red-500/20 text-red-400'
+                                                    }`}>
+                                                    {log.accuracy.toFixed(1)}%
+                                                </span>
+                                            </td>
+                                            <td className="text-gray-300">
+                                                {Math.floor(log.duration_sec / 60)}:{(log.duration_sec % 60).toString().padStart(2, '0')}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -127,7 +145,7 @@ export default async function PatientDetailPage({
                             <div className="w-20 h-20 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
                                 <Activity className="w-10 h-10 text-primary-400" />
                             </div>
-                            <h3 className="text-2xl font-semibold text-white mb-2">No Exercise Logs</h3>
+                            <h3 className="text-2xl font-semibold text-white mb-2">No Exercise Results</h3>
                             <p className="text-gray-400 text-lg">This patient hasn&apos;t recorded any exercises yet.</p>
                         </div>
                     )}

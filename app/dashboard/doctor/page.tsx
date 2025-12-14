@@ -8,7 +8,7 @@ import { Users, LogOut, ArrowRight, UserPlus } from 'lucide-react'
 export default async function DoctorDashboard() {
     const user = await getCurrentUser()
 
-    if (!user || user.role !== 'admin') {
+    if (!user || (user.role !== 'admin' && user.role !== 'doctor')) {
         redirect('/login')
     }
 
