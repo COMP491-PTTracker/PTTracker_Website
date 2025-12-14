@@ -46,7 +46,7 @@ export async function createPatient(formData: FormData) {
         return { error: 'Not authenticated' }
     }
 
-    // Try to get doctor's id from doctors table (optional)
+    // Get doctor's id and hospital_id from doctors table
     const { data: doctorData } = await supabase
         .from('doctors')
         .select('id, hospital_id')
@@ -86,6 +86,7 @@ export async function createPatient(formData: FormData) {
             role: 'patient',
             first_name: firstName,
             last_name: lastName,
+            hospital_id: hospitalId,
         })
         .eq('id', authData.user.id)
 
@@ -96,16 +97,18 @@ export async function createPatient(formData: FormData) {
     }
 
     // Insert into patients table (links to auth user via user_id)
-    const { error: patientError } = await adminSupabase.from('patients').insert({
-        user_id: authData.user.id,
-        national_id: nationalId,
-        pin_code: pinCode,
-        birth_date: birthDate || null,
-        phone: phone || null,
-        device_id: parseInt(deviceId),
-        hospital_id: hospitalId,
-        created_by: createdBy,
-    } as any)
+    const { error: patientError } = await adminSupabase
+        .from('patients')
+        .insert({
+            user_id: authData.user.id,
+            national_id: nationalId,
+            pin_code: pinCode,
+            birth_date: birthDate || null,
+            phone: phone || null,
+            device_id: parseInt(deviceId),
+            hospital_id: hospitalId,
+            created_by: createdBy,
+        } as any)
 
     if (patientError) {
         // If patient insert fails, delete the user and auth user
