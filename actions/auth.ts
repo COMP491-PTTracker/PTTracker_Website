@@ -65,3 +65,46 @@ export async function getCurrentUser() {
 
     return profile
 }
+
+export async function changePassword(formData: FormData) {
+    const supabase = await createClient()
+
+    const currentPassword = formData.get('currentPassword') as string
+    const newPassword = formData.get('newPassword') as string
+    const confirmPassword = formData.get('confirmPassword') as string
+
+    // Validate passwords match
+    if (newPassword !== confirmPassword) {
+        return { error: 'New passwords do not match' }
+    }
+
+    // Get current user
+    const {
+        data: { user },
+    } = await supabase.auth.getUser()
+
+    if (!user || !user.email) {
+        return { error: 'You must be logged in to change your password' }
+    }
+
+    // Step A: Verify identity by signing in with current password
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+        email: user.email,
+        password: currentPassword,
+    })
+
+    if (verifyError) {
+        return { error: 'Current password is incorrect' }
+    }
+
+    // Step B: Update to new password
+    const { error: updateError } = await supabase.auth.updateUser({
+        password: newPassword,
+    })
+
+    if (updateError) {
+        return { error: updateError.message }
+    }
+
+    return { success: true }
+}

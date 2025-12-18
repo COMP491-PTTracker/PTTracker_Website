@@ -52,6 +52,11 @@ export async function middleware(request: NextRequest) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
 
+        // Allow access to shared routes like /dashboard/settings for all authenticated users
+        if (request.nextUrl.pathname.startsWith('/dashboard/settings')) {
+            return response
+        }
+
         // Redirect admin/doctor to doctor dashboard
         const isStaff = profile.role === 'admin' || profile.role === 'doctor'
         if (isStaff && !request.nextUrl.pathname.startsWith('/dashboard/doctor')) {

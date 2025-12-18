@@ -1,9 +1,10 @@
-import { getCurrentUser, logout } from '@/actions/auth'
+import { getCurrentUser } from '@/actions/auth'
 import { getAllPatients } from '@/actions/doctor'
 import { redirect } from 'next/navigation'
 import CreatePatientForm from './CreatePatientForm'
 import PatientCard from './PatientCard'
-import { Users, LogOut, UserPlus } from 'lucide-react'
+import SettingsDropdown from '@/components/SettingsDropdown'
+import { Users, UserPlus } from 'lucide-react'
 
 export default async function DoctorDashboard() {
     const user = await getCurrentUser()
@@ -45,12 +46,7 @@ export default async function DoctorDashboard() {
                                 <p className="text-xs text-gray-400">{user.email}</p>
                             </div>
                         </div>
-                        <form action={logout}>
-                            <button type="submit" className="dark-btn-secondary flex items-center gap-2">
-                                <LogOut className="w-5 h-5" />
-                                Sign Out
-                            </button>
-                        </form>
+                        <SettingsDropdown />
                     </div>
                 </div>
             </header>

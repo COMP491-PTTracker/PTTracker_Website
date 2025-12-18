@@ -1,7 +1,8 @@
-import { getCurrentUser, logout } from '@/actions/auth'
+import { getCurrentUser } from '@/actions/auth'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import { Activity, LogOut, Calendar, Target, Clock, CheckCircle, XCircle } from 'lucide-react'
+import SettingsDropdown from '@/components/SettingsDropdown'
+import { Activity, Calendar, Target, Clock, CheckCircle, XCircle } from 'lucide-react'
 
 export default async function PatientDashboard() {
     const user = await getCurrentUser()
@@ -79,7 +80,7 @@ export default async function PatientDashboard() {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-950 to-gray-900">
             {/* Header */}
-            <header className="bg-gray-900/50 backdrop-blur-sm shadow-xl border-b border-gray-800">
+            <header className="bg-gray-900/50 backdrop-blur-sm shadow-xl border-b border-gray-800 relative z-50">
                 <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
                     <div>
                         <h1 className="text-3xl font-bold text-white flex items-center gap-3">
@@ -101,12 +102,7 @@ export default async function PatientDashboard() {
                             </div>
                         </div>
 
-                        <form action={logout}>
-                            <button type="submit" className="dark-btn-secondary flex items-center gap-2">
-                                <LogOut className="w-5 h-5" />
-                                Sign Out
-                            </button>
-                        </form>
+                        <SettingsDropdown />
                     </div>
                 </div>
             </header>
@@ -169,10 +165,10 @@ export default async function PatientDashboard() {
                                             </td>
                                             <td>
                                                 <span className={`inline-flex items-center px-3 py-1 rounded-full font-semibold ${result.accuracy >= 80
-                                                        ? 'bg-green-500/20 text-green-400'
-                                                        : result.accuracy >= 50
-                                                            ? 'bg-yellow-500/20 text-yellow-400'
-                                                            : 'bg-red-500/20 text-red-400'
+                                                    ? 'bg-green-500/20 text-green-400'
+                                                    : result.accuracy >= 50
+                                                        ? 'bg-yellow-500/20 text-yellow-400'
+                                                        : 'bg-red-500/20 text-red-400'
                                                     }`}>
                                                     {result.accuracy.toFixed(1)}%
                                                 </span>
