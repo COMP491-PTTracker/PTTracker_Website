@@ -22,6 +22,22 @@ export async function getAllPatients() {
     return patients
 }
 
+export async function getExercises() {
+    const supabase = await createClient()
+
+    const { data: exercises, error } = await supabase
+        .from('exercises')
+        .select('id, name')
+        .order('name', { ascending: true })
+
+    if (error) {
+        console.error('Error fetching exercises:', error)
+        return []
+    }
+
+    return exercises
+}
+
 export async function createPatient(formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
@@ -32,6 +48,17 @@ export async function createPatient(formData: FormData) {
     const birthDate = formData.get('birth_date') as string
     const phone = formData.get('phone') as string
     const deviceId = formData.get('device_id') as string
+    const exercisesJson = formData.get('exercises') as string
+
+    // Parse exercises array
+    let exercises: { exerciseId: number; weeklyTarget: number }[] = []
+    if (exercisesJson) {
+        try {
+            exercises = JSON.parse(exercisesJson)
+        } catch (e) {
+            console.error('Error parsing exercises:', e)
+        }
+    }
 
     // Use admin client to create user without logging out current user
     const adminSupabase = createAdminClient()
@@ -56,6 +83,7 @@ export async function createPatient(formData: FormData) {
     // If no doctor profile exists, we'll use null for created_by and hospital_id
     const createdBy = doctorData?.id || null
     const hospitalId = doctorData?.hospital_id || null
+    const doctorId = doctorData?.id || null
 
     // Create auth user
     const { data: authData, error: authError } = await adminSupabase.auth.admin.createUser({
@@ -96,8 +124,8 @@ export async function createPatient(formData: FormData) {
         return { error: userError.message }
     }
 
-    // Insert into patients table (links to auth user via user_id)
-    const { error: patientError } = await adminSupabase
+    // Insert into patients table (links to auth user via user_id) and get the patient ID
+    const { data: patientData, error: patientError } = await adminSupabase
         .from('patients')
         .insert({
             user_id: authData.user.id,
@@ -109,12 +137,35 @@ export async function createPatient(formData: FormData) {
             hospital_id: hospitalId,
             created_by: createdBy,
         } as any)
+        .select('id')
+        .single()
 
     if (patientError) {
         // If patient insert fails, delete the user and auth user
         await adminSupabase.from('users').delete().eq('id', authData.user.id)
         await adminSupabase.auth.admin.deleteUser(authData.user.id)
         return { error: patientError.message }
+    }
+
+    // Insert exercise programs if any exercises were selected
+    const patientId = (patientData as { id: number } | null)?.id
+    if (exercises.length > 0 && patientId) {
+        const programEntries = exercises.map((ex) => ({
+            patient_id: patientId,
+            doctor_id: doctorId,
+            exercise_id: ex.exerciseId,
+            weekly_target: ex.weeklyTarget,
+        }))
+
+        const { error: programError } = await adminSupabase
+            .from('programs')
+            .insert(programEntries as any)
+
+        if (programError) {
+            console.error('Error creating programs:', programError)
+            // Note: We don't roll back the patient creation here since the patient was created successfully
+            // The doctor can add exercises later if needed
+        }
     }
 
     revalidatePath('/dashboard/doctor')

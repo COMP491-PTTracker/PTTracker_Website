@@ -1,8 +1,18 @@
 'use client'
 
-import { createPatient } from '@/actions/doctor'
+import { createPatient, getExercises } from '@/actions/doctor'
 import { useState, useEffect } from 'react'
-import { UserPlus, X, Mail, Lock, User, RefreshCw } from 'lucide-react'
+import { UserPlus, X, Mail, Lock, User, RefreshCw, Plus, Minus, Dumbbell } from 'lucide-react'
+
+interface Exercise {
+    id: number
+    name: string
+}
+
+interface ExerciseEntry {
+    exerciseId: number
+    weeklyTarget: number
+}
 
 export default function CreatePatientForm() {
     const [isOpen, setIsOpen] = useState(false)
@@ -10,6 +20,10 @@ export default function CreatePatientForm() {
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
     const [tempPassword, setTempPassword] = useState('')
+    const [exercises, setExercises] = useState<Exercise[]>([])
+    const [exerciseEntries, setExerciseEntries] = useState<ExerciseEntry[]>([
+        { exerciseId: 0, weeklyTarget: 1 }
+    ])
 
     // Generate a simple temporary password
     const generateTempPassword = () => {
@@ -21,12 +35,36 @@ export default function CreatePatientForm() {
         return `${randomAdj}${randomNoun}${randomNum}`
     }
 
-    // Generate password when modal opens
+    // Generate password and fetch exercises when modal opens
     useEffect(() => {
         if (isOpen) {
             setTempPassword(generateTempPassword())
+            // Fetch exercises
+            getExercises().then((data) => {
+                setExercises(data)
+            })
+            // Reset exercise entries
+            setExerciseEntries([{ exerciseId: 0, weeklyTarget: 1 }])
         }
     }, [isOpen])
+
+    const addExerciseEntry = () => {
+        if (exerciseEntries.length < 5) {
+            setExerciseEntries([...exerciseEntries, { exerciseId: 0, weeklyTarget: 1 }])
+        }
+    }
+
+    const removeExerciseEntry = (index: number) => {
+        if (exerciseEntries.length > 1) {
+            setExerciseEntries(exerciseEntries.filter((_, i) => i !== index))
+        }
+    }
+
+    const updateExerciseEntry = (index: number, field: 'exerciseId' | 'weeklyTarget', value: number) => {
+        const updated = [...exerciseEntries]
+        updated[index] = { ...updated[index], [field]: value }
+        setExerciseEntries(updated)
+    }
 
     async function handleSubmit(formData: FormData) {
         setLoading(true)
@@ -35,6 +73,10 @@ export default function CreatePatientForm() {
 
         // Add the temporary password to form data
         formData.set('password', tempPassword)
+
+        // Add exercises to form data (filter out entries with no exercise selected)
+        const validExercises = exerciseEntries.filter(e => e.exerciseId > 0)
+        formData.set('exercises', JSON.stringify(validExercises))
 
         const result = await createPatient(formData)
 
@@ -94,6 +136,7 @@ export default function CreatePatientForm() {
                             )}
 
                             <form action={handleSubmit} className="space-y-5">
+                                {/* 1. First Name, Last Name (side by side) */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="first_name" className="dark-label flex items-center gap-2">
@@ -128,53 +171,112 @@ export default function CreatePatientForm() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label htmlFor="national_id" className="dark-label">
-                                        National ID
+                                {/* 2. Exercise Name and Weekly Target (side by side) */}
+                                <div className="space-y-3">
+                                    <label className="dark-label flex items-center gap-2">
+                                        <Dumbbell className="w-5 h-5 text-primary-400" />
+                                        Exercises
                                     </label>
-                                    <input
-                                        id="national_id"
-                                        name="national_id"
-                                        type="text"
-                                        required
-                                        minLength={11}
-                                        maxLength={11}
-                                        pattern="[0-9]{11}"
-                                        className="dark-input"
-                                        placeholder="12345678901"
-                                        disabled={loading}
-                                        onInput={(e) => {
-                                            const input = e.currentTarget
-                                            input.value = input.value.replace(/[^0-9]/g, '')
-                                        }}
-                                    />
-                                    <p className="text-sm text-gray-500 mt-1">Must be exactly 11 digits</p>
+                                    {exerciseEntries.map((entry, index) => (
+                                        <div key={index} className="flex gap-2 items-start">
+                                            <div className="flex-1">
+                                                <select
+                                                    value={entry.exerciseId}
+                                                    onChange={(e) => updateExerciseEntry(index, 'exerciseId', parseInt(e.target.value))}
+                                                    className="dark-input w-full"
+                                                    disabled={loading}
+                                                >
+                                                    <option value={0}>Select exercise...</option>
+                                                    {exercises.map((ex) => (
+                                                        <option key={ex.id} value={ex.id}>
+                                                            {ex.name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="w-24">
+                                                <input
+                                                    type="number"
+                                                    min={1}
+                                                    max={99}
+                                                    value={entry.weeklyTarget}
+                                                    onChange={(e) => updateExerciseEntry(index, 'weeklyTarget', parseInt(e.target.value) || 1)}
+                                                    className="dark-input w-full text-center"
+                                                    placeholder="Target"
+                                                    disabled={loading}
+                                                    title="Weekly target"
+                                                />
+                                            </div>
+                                            {exerciseEntries.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => removeExerciseEntry(index)}
+                                                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                    disabled={loading}
+                                                    title="Remove exercise"
+                                                >
+                                                    <Minus className="w-5 h-5" />
+                                                </button>
+                                            )}
+                                            {index === exerciseEntries.length - 1 && exerciseEntries.length < 5 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={addExerciseEntry}
+                                                    className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10 rounded-lg transition-colors"
+                                                    disabled={loading}
+                                                    title="Add exercise"
+                                                >
+                                                    <Plus className="w-5 h-5" />
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <p className="text-sm text-gray-500">Select exercises and weekly targets (max 5)</p>
                                 </div>
 
-                                <div>
-                                    <label htmlFor="pin_code" className="dark-label flex items-center gap-2">
-                                        <Lock className="w-5 h-5 text-primary-400" />
-                                        PIN Code
-                                    </label>
-                                    <input
-                                        id="pin_code"
-                                        name="pin_code"
-                                        type="text"
-                                        required
-                                        minLength={4}
-                                        maxLength={4}
-                                        pattern="[0-9]{4}"
-                                        className="dark-input"
-                                        placeholder="1234"
-                                        disabled={loading}
-                                        onInput={(e) => {
-                                            const input = e.currentTarget
-                                            input.value = input.value.replace(/[^0-9]/g, '')
-                                        }}
-                                    />
-                                    <p className="text-sm text-gray-500 mt-1">Must be exactly 4 digits</p>
+                                {/* 3. Device ID and PIN Code (side by side) */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label htmlFor="device_id" className="dark-label">
+                                            Device ID
+                                        </label>
+                                        <input
+                                            id="device_id"
+                                            name="device_id"
+                                            type="number"
+                                            required
+                                            className="dark-input"
+                                            placeholder="1"
+                                            disabled={loading}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label htmlFor="pin_code" className="dark-label flex items-center gap-2">
+                                            <Lock className="w-5 h-5 text-primary-400" />
+                                            PIN Code
+                                        </label>
+                                        <input
+                                            id="pin_code"
+                                            name="pin_code"
+                                            type="text"
+                                            required
+                                            minLength={4}
+                                            maxLength={4}
+                                            pattern="[0-9]{4}"
+                                            className="dark-input"
+                                            placeholder="1234"
+                                            disabled={loading}
+                                            onInput={(e) => {
+                                                const input = e.currentTarget
+                                                input.value = input.value.replace(/[^0-9]/g, '')
+                                            }}
+                                        />
+                                        <p className="text-sm text-gray-500 mt-1">4 digits</p>
+                                    </div>
                                 </div>
 
+                                {/* 4. Email Address */}
                                 <div>
                                     <label htmlFor="email" className="dark-label flex items-center gap-2">
                                         <Mail className="w-5 h-5 text-primary-400" />
@@ -191,6 +293,7 @@ export default function CreatePatientForm() {
                                     />
                                 </div>
 
+                                {/* 5. Temporary Password */}
                                 <div>
                                     <label htmlFor="password" className="dark-label flex items-center gap-2">
                                         <Lock className="w-5 h-5 text-primary-400" />
@@ -225,6 +328,31 @@ export default function CreatePatientForm() {
                                     </p>
                                 </div>
 
+                                {/* 6. National ID */}
+                                <div>
+                                    <label htmlFor="national_id" className="dark-label">
+                                        National ID
+                                    </label>
+                                    <input
+                                        id="national_id"
+                                        name="national_id"
+                                        type="text"
+                                        required
+                                        minLength={11}
+                                        maxLength={11}
+                                        pattern="[0-9]{11}"
+                                        className="dark-input"
+                                        placeholder="12345678901"
+                                        disabled={loading}
+                                        onInput={(e) => {
+                                            const input = e.currentTarget
+                                            input.value = input.value.replace(/[^0-9]/g, '')
+                                        }}
+                                    />
+                                    <p className="text-sm text-gray-500 mt-1">Must be exactly 11 digits</p>
+                                </div>
+
+                                {/* 7. Birth Date and Phone Number (side by side) */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="birth_date" className="dark-label">
@@ -254,22 +382,6 @@ export default function CreatePatientForm() {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label htmlFor="device_id" className="dark-label">
-                                        Device ID
-                                    </label>
-                                    <input
-                                        id="device_id"
-                                        name="device_id"
-                                        type="number"
-                                        required
-                                        className="dark-input"
-                                        placeholder="1"
-                                        disabled={loading}
-                                    />
-                                    <p className="text-sm text-gray-500 mt-1">Physical therapy device identifier</p>
-                                </div>
-
                                 <div className="flex gap-3 pt-4">
                                     <button
                                         type="button"
@@ -295,4 +407,3 @@ export default function CreatePatientForm() {
         </>
     )
 }
-
