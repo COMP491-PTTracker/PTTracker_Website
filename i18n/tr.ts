@@ -185,7 +185,7 @@ export const tr: TranslationKeys = {
         lastName: "Soyad",
         exercises: "Egzersizler",
         selectExercise: "Egzersiz seçin...",
-        weeklyTarget: "Haftalık hedef",
+        weeklyTarget: "Tekrar Sayısı",
         selectExercisesAndTargets: "Egzersiz ve haftalık hedefleri seçin (maks 5)",
         removeExercise: "Egzersizi kaldır",
         addExercise: "Egzersiz ekle",
@@ -204,5 +204,6 @@ export const tr: TranslationKeys = {
         creating: "Oluşturuluyor...",
         createPatient: "Hasta Oluştur",
         patientCreatedSuccessfully: "Hasta başarıyla oluşturuldu!",
+        repsOutOfRange: "1-99 arasında olmalı",
     },
 };

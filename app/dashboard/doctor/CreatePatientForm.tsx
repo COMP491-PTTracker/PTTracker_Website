@@ -25,6 +25,7 @@ export default function CreatePatientForm() {
     const [exerciseEntries, setExerciseEntries] = useState<ExerciseEntry[]>([
         { exerciseId: 0, weeklyTarget: 1 }
     ])
+    const [invalidRepsIndex, setInvalidRepsIndex] = useState<number | null>(null)
     const { t } = useLanguage()
 
     // Generate a simple temporary password
@@ -64,6 +65,16 @@ export default function CreatePatientForm() {
 
     const updateExerciseEntry = (index: number, field: 'exerciseId' | 'weeklyTarget', value: number) => {
         const updated = [...exerciseEntries]
+        if (field === 'weeklyTarget') {
+            // Check if value is out of range
+            if (value < 1 || value > 99) {
+                setInvalidRepsIndex(index)
+                // Clamp the value to valid range
+                value = Math.max(1, Math.min(99, value))
+            } else {
+                setInvalidRepsIndex(null)
+            }
+        }
         updated[index] = { ...updated[index], [field]: value }
         setExerciseEntries(updated)
     }
@@ -175,12 +186,22 @@ export default function CreatePatientForm() {
 
                                 {/* 2. Exercise Name and Weekly Target (side by side) */}
                                 <div className="space-y-3">
-                                    <label className="dark-label flex items-center gap-2">
-                                        <Dumbbell className="w-5 h-5 text-primary-400" />
-                                        {t.createPatient.exercises}
-                                    </label>
+                                    {/* Header row with both labels */}
+                                    <div className="flex gap-2 items-end">
+                                        <div className="flex-1">
+                                            <label className="dark-label flex items-center gap-2">
+                                                <Dumbbell className="w-5 h-5 text-primary-400" />
+                                                {t.createPatient.exercises}
+                                            </label>
+                                        </div>
+                                        <div className="w-28">
+                                            <label className="dark-label">{t.createPatient.weeklyTarget}</label>
+                                        </div>
+                                        <div className="w-20"></div>
+                                    </div>
+                                    {/* Exercise rows */}
                                     {exerciseEntries.map((entry, index) => (
-                                        <div key={index} className="flex gap-2 items-start">
+                                        <div key={index} className="flex gap-2 items-center">
                                             <div className="flex-1">
                                                 <select
                                                     value={entry.exerciseId}
@@ -196,41 +217,45 @@ export default function CreatePatientForm() {
                                                     ))}
                                                 </select>
                                             </div>
-                                            <div className="w-24">
+                                            <div className="w-28">
                                                 <input
                                                     type="number"
                                                     min={1}
                                                     max={99}
                                                     value={entry.weeklyTarget}
                                                     onChange={(e) => updateExerciseEntry(index, 'weeklyTarget', parseInt(e.target.value) || 1)}
-                                                    className="dark-input w-full text-center"
-                                                    placeholder="Target"
+                                                    className={`dark-input w-full text-center ${invalidRepsIndex === index ? 'border-red-500' : ''}`}
+                                                    placeholder="10"
                                                     disabled={loading}
-                                                    title={t.createPatient.weeklyTarget}
                                                 />
+                                                {invalidRepsIndex === index && (
+                                                    <p className="text-red-400 text-xs mt-1">{t.createPatient.repsOutOfRange}</p>
+                                                )}
                                             </div>
-                                            {exerciseEntries.length > 1 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeExerciseEntry(index)}
-                                                    className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
-                                                    disabled={loading}
-                                                    title={t.createPatient.removeExercise}
-                                                >
-                                                    <Minus className="w-5 h-5" />
-                                                </button>
-                                            )}
-                                            {index === exerciseEntries.length - 1 && exerciseEntries.length < 5 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={addExerciseEntry}
-                                                    className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10 rounded-lg transition-colors"
-                                                    disabled={loading}
-                                                    title={t.createPatient.addExercise}
-                                                >
-                                                    <Plus className="w-5 h-5" />
-                                                </button>
-                                            )}
+                                            <div className="w-20 flex justify-end gap-1">
+                                                {exerciseEntries.length > 1 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => removeExerciseEntry(index)}
+                                                        className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                        disabled={loading}
+                                                        title={t.createPatient.removeExercise}
+                                                    >
+                                                        <Minus className="w-5 h-5" />
+                                                    </button>
+                                                )}
+                                                {index === exerciseEntries.length - 1 && exerciseEntries.length < 5 && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={addExerciseEntry}
+                                                        className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10 rounded-lg transition-colors"
+                                                        disabled={loading}
+                                                        title={t.createPatient.addExercise}
+                                                    >
+                                                        <Plus className="w-5 h-5" />
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
                                     ))}
                                     <p className="text-sm text-gray-500">{t.createPatient.selectExercisesAndTargets}</p>

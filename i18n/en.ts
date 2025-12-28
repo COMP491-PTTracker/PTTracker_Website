@@ -181,7 +181,7 @@ export const en = {
         lastName: "Last Name",
         exercises: "Exercises",
         selectExercise: "Select exercise...",
-        weeklyTarget: "Weekly target",
+        weeklyTarget: "Repetitions",
         selectExercisesAndTargets: "Select exercises and weekly targets (max 5)",
         removeExercise: "Remove exercise",
         addExercise: "Add exercise",
@@ -200,6 +200,7 @@ export const en = {
         creating: "Creating...",
         createPatient: "Create Patient",
         patientCreatedSuccessfully: "Patient created successfully!",
+        repsOutOfRange: "Must be 1-99",
     },
 };
 
