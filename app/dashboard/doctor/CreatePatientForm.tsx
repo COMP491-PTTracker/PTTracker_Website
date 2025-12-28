@@ -3,6 +3,7 @@
 import { createPatient, getExercises } from '@/actions/doctor'
 import { useState, useEffect } from 'react'
 import { UserPlus, X, Mail, Lock, User, RefreshCw, Plus, Minus, Dumbbell } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface Exercise {
     id: number
@@ -24,6 +25,7 @@ export default function CreatePatientForm() {
     const [exerciseEntries, setExerciseEntries] = useState<ExerciseEntry[]>([
         { exerciseId: 0, weeklyTarget: 1 }
     ])
+    const { t } = useLanguage()
 
     // Generate a simple temporary password
     const generateTempPassword = () => {
@@ -98,7 +100,7 @@ export default function CreatePatientForm() {
         <>
             <button onClick={() => setIsOpen(true)} className="dark-btn-secondary flex items-center gap-2">
                 <UserPlus className="w-5 h-5" />
-                Create New Patient
+                {t.doctor.createNewPatient}
             </button>
 
             {isOpen && (
@@ -109,7 +111,7 @@ export default function CreatePatientForm() {
                                 <div className="w-10 h-10 bg-gradient-to-br from-secondary-500 to-secondary-600 rounded-xl flex items-center justify-center">
                                     <UserPlus className="w-6 h-6 text-white" />
                                 </div>
-                                Create New Patient
+                                {t.createPatient.createNewPatient}
                             </h2>
                             <button
                                 onClick={() => setIsOpen(false)}
@@ -131,7 +133,7 @@ export default function CreatePatientForm() {
                             {success && (
                                 <div className="mb-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-start gap-3">
                                     <div className="text-green-500 mt-0.5">✓</div>
-                                    <div>Patient created successfully!</div>
+                                    <div>{t.createPatient.patientCreatedSuccessfully}</div>
                                 </div>
                             )}
 
@@ -141,7 +143,7 @@ export default function CreatePatientForm() {
                                     <div>
                                         <label htmlFor="first_name" className="dark-label flex items-center gap-2">
                                             <User className="w-5 h-5 text-primary-400" />
-                                            First Name
+                                            {t.createPatient.firstName}
                                         </label>
                                         <input
                                             id="first_name"
@@ -157,7 +159,7 @@ export default function CreatePatientForm() {
                                     <div>
                                         <label htmlFor="last_name" className="dark-label flex items-center gap-2">
                                             <User className="w-5 h-5 text-primary-400" />
-                                            Last Name
+                                            {t.createPatient.lastName}
                                         </label>
                                         <input
                                             id="last_name"
@@ -175,7 +177,7 @@ export default function CreatePatientForm() {
                                 <div className="space-y-3">
                                     <label className="dark-label flex items-center gap-2">
                                         <Dumbbell className="w-5 h-5 text-primary-400" />
-                                        Exercises
+                                        {t.createPatient.exercises}
                                     </label>
                                     {exerciseEntries.map((entry, index) => (
                                         <div key={index} className="flex gap-2 items-start">
@@ -186,7 +188,7 @@ export default function CreatePatientForm() {
                                                     className="dark-input w-full"
                                                     disabled={loading}
                                                 >
-                                                    <option value={0}>Select exercise...</option>
+                                                    <option value={0}>{t.createPatient.selectExercise}</option>
                                                     {exercises.map((ex) => (
                                                         <option key={ex.id} value={ex.id}>
                                                             {ex.name}
@@ -204,7 +206,7 @@ export default function CreatePatientForm() {
                                                     className="dark-input w-full text-center"
                                                     placeholder="Target"
                                                     disabled={loading}
-                                                    title="Weekly target"
+                                                    title={t.createPatient.weeklyTarget}
                                                 />
                                             </div>
                                             {exerciseEntries.length > 1 && (
@@ -213,7 +215,7 @@ export default function CreatePatientForm() {
                                                     onClick={() => removeExerciseEntry(index)}
                                                     className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
                                                     disabled={loading}
-                                                    title="Remove exercise"
+                                                    title={t.createPatient.removeExercise}
                                                 >
                                                     <Minus className="w-5 h-5" />
                                                 </button>
@@ -224,21 +226,21 @@ export default function CreatePatientForm() {
                                                     onClick={addExerciseEntry}
                                                     className="p-2 text-green-400 hover:text-green-300 hover:bg-green-500/10 rounded-lg transition-colors"
                                                     disabled={loading}
-                                                    title="Add exercise"
+                                                    title={t.createPatient.addExercise}
                                                 >
                                                     <Plus className="w-5 h-5" />
                                                 </button>
                                             )}
                                         </div>
                                     ))}
-                                    <p className="text-sm text-gray-500">Select exercises and weekly targets (max 5)</p>
+                                    <p className="text-sm text-gray-500">{t.createPatient.selectExercisesAndTargets}</p>
                                 </div>
 
                                 {/* 3. Device ID and PIN Code (side by side) */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="device_id" className="dark-label">
-                                            Device ID
+                                            {t.createPatient.deviceId}
                                         </label>
                                         <input
                                             id="device_id"
@@ -254,7 +256,7 @@ export default function CreatePatientForm() {
                                     <div>
                                         <label htmlFor="pin_code" className="dark-label flex items-center gap-2">
                                             <Lock className="w-5 h-5 text-primary-400" />
-                                            PIN Code
+                                            {t.createPatient.pinCode}
                                         </label>
                                         <input
                                             id="pin_code"
@@ -272,7 +274,7 @@ export default function CreatePatientForm() {
                                                 input.value = input.value.replace(/[^0-9]/g, '')
                                             }}
                                         />
-                                        <p className="text-sm text-gray-500 mt-1">4 digits</p>
+                                        <p className="text-sm text-gray-500 mt-1">{t.createPatient.digits4}</p>
                                     </div>
                                 </div>
 
@@ -280,7 +282,7 @@ export default function CreatePatientForm() {
                                 <div>
                                     <label htmlFor="email" className="dark-label flex items-center gap-2">
                                         <Mail className="w-5 h-5 text-primary-400" />
-                                        Email Address
+                                        {t.createPatient.emailAddress}
                                     </label>
                                     <input
                                         id="email"
@@ -297,7 +299,7 @@ export default function CreatePatientForm() {
                                 <div>
                                     <label htmlFor="password" className="dark-label flex items-center gap-2">
                                         <Lock className="w-5 h-5 text-primary-400" />
-                                        Temporary Password
+                                        {t.createPatient.temporaryPassword}
                                     </label>
                                     <div className="flex gap-2">
                                         <input
@@ -309,7 +311,7 @@ export default function CreatePatientForm() {
                                             required
                                             minLength={6}
                                             className="dark-input flex-1 font-mono"
-                                            placeholder="Enter or generate password"
+                                            placeholder={t.createPatient.enterOrGeneratePassword}
                                             disabled={loading}
                                         />
                                         <button
@@ -317,21 +319,21 @@ export default function CreatePatientForm() {
                                             onClick={() => setTempPassword(generateTempPassword())}
                                             className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors"
                                             disabled={loading}
-                                            title="Generate new password"
+                                            title={t.createPatient.generateNewPassword}
                                         >
                                             <RefreshCw className="w-5 h-5 text-gray-300" />
                                         </button>
                                     </div>
                                     <p className="text-sm text-amber-400 mt-1 flex items-start gap-1">
                                         <span>⚠</span>
-                                        <span>Patient will change this password on first login</span>
+                                        <span>{t.createPatient.patientWillChange}</span>
                                     </p>
                                 </div>
 
                                 {/* 6. National ID */}
                                 <div>
                                     <label htmlFor="national_id" className="dark-label">
-                                        National ID
+                                        {t.createPatient.nationalId}
                                     </label>
                                     <input
                                         id="national_id"
@@ -349,14 +351,14 @@ export default function CreatePatientForm() {
                                             input.value = input.value.replace(/[^0-9]/g, '')
                                         }}
                                     />
-                                    <p className="text-sm text-gray-500 mt-1">Must be exactly 11 digits</p>
+                                    <p className="text-sm text-gray-500 mt-1">{t.createPatient.mustBe11Digits}</p>
                                 </div>
 
                                 {/* 7. Birth Date and Phone Number (side by side) */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label htmlFor="birth_date" className="dark-label">
-                                            Birth Date
+                                            {t.createPatient.birthDate}
                                         </label>
                                         <input
                                             id="birth_date"
@@ -369,7 +371,7 @@ export default function CreatePatientForm() {
 
                                     <div>
                                         <label htmlFor="phone" className="dark-label">
-                                            Phone
+                                            {t.createPatient.phone}
                                         </label>
                                         <input
                                             id="phone"
@@ -389,14 +391,14 @@ export default function CreatePatientForm() {
                                         className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 font-semibold rounded-xl hover:bg-gray-800/50 transition-all"
                                         disabled={loading}
                                     >
-                                        Cancel
+                                        {t.common.cancel}
                                     </button>
                                     <button
                                         type="submit"
                                         className="flex-1 dark-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                                         disabled={loading}
                                     >
-                                        {loading ? 'Creating...' : 'Create Patient'}
+                                        {loading ? t.createPatient.creating : t.createPatient.createPatient}
                                     </button>
                                 </div>
                             </form>

@@ -1,23 +1,22 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import {
-    Shield,
-    TrendingUp,
     Play,
-    Trophy,
-    Target,
-    Activity,
     CheckCircle,
-    ArrowRight,
-    Sparkles,
+    Heart,
+    Activity,
     Cpu,
-    DollarSign,
-    Users,
-    Mail,
-    Phone,
+    Trophy,
+    ChevronRight,
+    Globe,
+    AtSign,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import LanguageToggle from "@/components/LanguageToggle";
+import ThemeToggle from "@/components/ThemeToggle";
 
 // Hook for scroll animations
 function useScrollAnimation() {
@@ -45,83 +44,156 @@ function useScrollAnimation() {
     return ref;
 }
 
-// Smooth scroll function
-function smoothScrollTo(elementId: string) {
-    const element = document.getElementById(elementId);
-    element?.scrollIntoView({ behavior: 'smooth' });
-}
-
 export default function HomePage() {
     const scrollRef = useScrollAnimation();
+    const { t } = useLanguage();
 
     return (
-        <div ref={scrollRef} className="min-h-screen bg-gray-950 text-white overflow-hidden">
-            {/* Hero Section */}
-            <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-950 to-primary-950" />
+        <div ref={scrollRef} className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-300">
+            {/* Navigation - Fixed Header (always visible) */}
+            <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
+                <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+                    {/* Logo - Clickable, scrolls to top */}
+                    <button
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        className="flex items-center gap-3 cursor-pointer"
+                    >
+                        <Image
+                            src="/assets/pttracker3.png"
+                            alt="PTTracker Logo"
+                            width={280}
+                            height={70}
+                            className="h-16 w-auto dark:brightness-0 dark:invert"
+                        />
+                    </button>
 
-                {/* Animated Background Elements */}
+                    {/* Nav Links */}
+                    <nav className="hidden md:flex items-center gap-8">
+                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#features">{t.home.seeInAction}</a>
+                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#how-it-works">{t.home.inAction}</a>
+                    </nav>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                        <LanguageToggle />
+                        <ThemeToggle />
+                        <Link
+                            href="/login"
+                            className="hidden sm:flex h-10 items-center justify-center rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-sm font-bold text-slate-900 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"
+                        >
+                            {t.login.signIn}
+                        </Link>
+                        <button className="flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-[#11221f] hover:brightness-110 transition-colors glow-primary">
+                            {t.home.requestDemo}
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            {/* Brand Hero - First Thing Users See (pt-20 accounts for fixed header) */}
+            <section className="relative pt-28 pb-20 lg:pt-36 lg:pb-28 overflow-hidden bg-gradient-to-b from-background-light via-background-light to-slate-50 dark:from-background-dark dark:via-background-dark dark:to-[#0d1a18]">
+                {/* Background Glow */}
                 <div className="absolute inset-0 overflow-hidden">
-                    <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-secondary-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/20 rounded-full blur-3xl opacity-40"></div>
                 </div>
 
-                {/* Grid Overlay */}
-                <div
-                    className="absolute inset-0 opacity-5"
-                    style={{
-                        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                        backgroundSize: '50px 50px'
-                    }}
-                />
-
-                {/* Hero Content */}
-                <div className="relative z-10 max-w-6xl mx-auto px-6 py-20 text-center">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-500/10 border border-primary-500/20 text-primary-400 text-sm font-medium mb-8">
-                        <Sparkles className="w-4 h-4" />
-                        Edge AI-Powered Remote Patient Monitoring
+                <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+                    {/* Large Logo */}
+                    <div className="mb-8">
+                        <Image
+                            src="/assets/pttracker3.png"
+                            alt="PTTracker"
+                            width={800}
+                            height={200}
+                            className="h-32 sm:h-44 lg:h-56 w-auto mx-auto dark:brightness-0 dark:invert"
+                            priority
+                        />
                     </div>
 
-                    <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                        <span className="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
-                            Automate Remote Patient
-                        </span>
-                        <br />
-                        <span className="bg-gradient-to-r from-primary-400 via-primary-300 to-secondary-400 bg-clip-text text-transparent">
-                            Monitoring with Edge AI
+                    {/* Powerful Slogan */}
+                    <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight mb-6">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-400 to-teal-300">
+                            Recovery, Reimagined.
                         </span>
                     </h1>
 
-                    <p className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 leading-relaxed">
-                        Scale your clinic&apos;s reach and reduce costs. Free up physical therapists for complex cases
-                        by automating routine feedback with AI-powered motion tracking.
+                    <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-10 font-body">
+                        AI-powered physical therapy from the comfort of your home.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <button
-                            onClick={() => smoothScrollTo('contact')}
-                            className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white font-semibold rounded-full text-lg shadow-2xl shadow-primary-500/25 transition-all duration-300 hover:scale-105 hover:shadow-primary-500/40"
-                        >
-                            Request a Demo
-                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    {/* CTA Buttons */}
+                    <div className="flex flex-wrap gap-4 justify-center">
+                        <button className="h-14 px-10 rounded-xl bg-primary text-[#11221f] font-bold text-lg hover:brightness-110 transition-all flex items-center gap-2 glow-primary">
+                            <Heart className="w-5 h-5" />
+                            {t.home.requestDemo}
                         </button>
                         <Link
                             href="/login"
-                            className="inline-flex items-center gap-2 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-semibold rounded-full text-lg transition-all duration-300"
+                            className="h-14 px-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2"
                         >
-                            Already a Partner? Log In
-                            <ArrowRight className="w-5 h-5" />
+                            {t.home.alreadyPartner}
+                            <ChevronRight className="w-5 h-5" />
                         </Link>
                     </div>
+                </div>
+            </section>
 
-                    {/* Video Placeholder - Skeleton Overlay Visual */}
-                    <div className="mt-16 relative max-w-4xl mx-auto">
-                        <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
-                            <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative">
-                                {/* Simulated skeleton tracking overlay */}
+            {/* Hero Section */}
+            <section className="relative pt-12 pb-20 lg:pt-20 overflow-hidden">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div className="flex flex-col gap-6 max-w-2xl">
+                            {/* Badge */}
+                            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-1">
+                                <span className="flex size-2 rounded-full bg-primary animate-pulse"></span>
+                                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">{t.home.badge}</span>
+                            </div>
+
+                            {/* Headline */}
+                            <h1 className="text-5xl sm:text-6xl font-black leading-[1.1] tracking-tight">
+                                {t.home.heroTitle1} <br />
+                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-emerald-400">
+                                    {t.home.heroTitle2}
+                                </span>
+                            </h1>
+
+                            {/* Description */}
+                            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-body">
+                                {t.home.heroDescription}
+                            </p>
+
+                            {/* CTA Buttons */}
+                            <div className="flex flex-wrap gap-4 pt-4">
+                                <button className="h-12 px-8 rounded-xl bg-primary text-[#11221f] font-bold text-base hover:brightness-110 transition-all flex items-center gap-2">
+                                    <Heart className="w-5 h-5" />
+                                    {t.home.requestDemo}
+                                </button>
+                                <Link
+                                    href="/login"
+                                    className="h-12 px-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2"
+                                >
+                                    <Activity className="w-5 h-5" />
+                                    {t.home.alreadyPartner}
+                                </Link>
+                            </div>
+
+                            {/* User Avatars */}
+                            <div className="flex items-center gap-4 pt-4 text-sm text-slate-500 dark:text-slate-400 font-body">
+                                <div className="flex -space-x-2">
+                                    <div className="size-8 rounded-full border-2 border-background-light dark:border-background-dark bg-gradient-to-br from-primary/40 to-emerald-500/40"></div>
+                                    <div className="size-8 rounded-full border-2 border-background-light dark:border-background-dark bg-gradient-to-br from-blue-400/40 to-purple-500/40"></div>
+                                    <div className="size-8 rounded-full border-2 border-background-light dark:border-background-dark bg-gradient-to-br from-orange-400/40 to-red-500/40"></div>
+                                </div>
+                                <p>{t.home.clinicsRelying}</p>
+                            </div>
+                        </div>
+
+                        {/* Hero Image */}
+                        <div className="relative lg:h-auto scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                            <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50"></div>
+                            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-100 dark:from-slate-800 to-slate-200 dark:to-slate-900">
                                 <div className="absolute inset-0 flex items-center justify-center">
-                                    <svg className="w-48 h-64 text-primary-500/30" viewBox="0 0 100 150" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <svg className="w-48 h-64 text-primary/30" viewBox="0 0 100 150" fill="none" stroke="currentColor" strokeWidth="2">
                                         {/* Head */}
                                         <circle cx="50" cy="15" r="10" />
                                         {/* Body */}
@@ -133,329 +205,225 @@ export default function HomePage() {
                                         <line x1="50" y1="70" x2="30" y2="110" />
                                         <line x1="50" y1="70" x2="70" y2="110" />
                                         {/* Joints */}
-                                        <circle cx="50" cy="35" r="3" className="fill-primary-400" />
-                                        <circle cx="20" cy="55" r="3" className="fill-primary-400" />
-                                        <circle cx="80" cy="55" r="3" className="fill-primary-400" />
-                                        <circle cx="50" cy="70" r="3" className="fill-primary-400" />
-                                        <circle cx="30" cy="110" r="3" className="fill-primary-400" />
-                                        <circle cx="70" cy="110" r="3" className="fill-primary-400" />
+                                        <circle cx="50" cy="35" r="3" className="fill-primary" />
+                                        <circle cx="20" cy="55" r="3" className="fill-primary" />
+                                        <circle cx="80" cy="55" r="3" className="fill-primary" />
+                                        <circle cx="50" cy="70" r="3" className="fill-primary" />
+                                        <circle cx="30" cy="110" r="3" className="fill-primary" />
+                                        <circle cx="70" cy="110" r="3" className="fill-primary" />
                                     </svg>
                                 </div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
-                                <button className="relative z-10 w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all hover:scale-110">
-                                    <Play className="w-8 h-8 text-white ml-1" fill="white" />
-                                </button>
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#11221f] via-transparent to-transparent opacity-80"></div>
+                                <div className="absolute bottom-6 left-6 right-6">
+                                    <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md rounded-lg px-3 py-2 text-primary border border-primary/30">
+                                        <CheckCircle className="w-5 h-5 animate-bounce" />
+                                        <span className="font-bold">{t.home.aiFormCorrection}: 98%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {/* Glow effect */}
-                        <div className="absolute -inset-4 bg-gradient-to-r from-primary-500/20 via-transparent to-secondary-500/20 rounded-3xl blur-2xl -z-10" />
                     </div>
                 </div>
             </section>
 
-            {/* Value Proposition Feature Blocks */}
-            <section className="py-24 px-6 bg-gradient-to-b from-gray-950 to-gray-900">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-700">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                            Built for{" "}
-                            <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                                Healthcare Providers
-                            </span>
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                            Reduce costs, scale your clinic, and improve patient outcomes
-                        </p>
+            {/* Trusted By Section */}
+            <section className="py-10 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/20">
+                <div className="mx-auto max-w-7xl px-4 text-center">
+                    <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-wider">
+                        {t.home.trustedBy} {t.home.leadingClinics}
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Heart className="w-5 h-5" /> CardioHealth
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Activity className="w-5 h-5" /> OrthoPlus
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Cpu className="w-5 h-5" /> VitalMove
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Trophy className="w-5 h-5" /> SafeRecover
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            {/* Features Grid */}
+            <section id="features" className="py-24 bg-white dark:bg-[#11221f]">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="mb-16 max-w-3xl scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-6">{t.home.builtFor} {t.home.healthcareProviders}</h2>
+                        <p className="text-lg text-slate-600 dark:text-slate-300 font-body">{t.home.reduceCostsSubtitle}</p>
                     </div>
 
                     <div className="grid md:grid-cols-3 gap-8">
-                        {/* Block 1: Liability & Compliance */}
-                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
-                            <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 backdrop-blur-sm hover:border-primary-500/30 transition-all duration-500 group">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center mb-6 shadow-lg shadow-primary-500/25 group-hover:scale-110 transition-transform">
-                                    <Shield className="w-8 h-8 text-white" />
-                                </div>
-
-                                <h3 className="text-2xl font-bold mb-4 text-white">
-                                    Mitigate Liability
-                                </h3>
-
-                                <p className="text-gray-400 mb-6 leading-relaxed">
-                                    AI-enforced form correction ensures patients exercise safely at home.
-                                    Document compliance with real-time monitoring and automated alerts for incorrect movements.
-                                </p>
-
-                                <ul className="space-y-3">
-                                    {["Real-time form monitoring", "Compliance documentation", "Risk reduction protocols"].map((item, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-gray-300">
-                                            <CheckCircle className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
+                        {/* Feature 1: AI Form Correction */}
+                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100 group p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <div className="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                <Activity className="w-8 h-8" />
                             </div>
+                            <h3 className="text-xl font-bold mb-3">{t.home.aiFormCorrection}</h3>
+                            <p className="text-slate-600 dark:text-slate-400 font-body leading-relaxed">
+                                {t.home.liabilityDescription}
+                            </p>
                         </div>
 
-                        {/* Block 2: Patient Adherence */}
-                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
-                            <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 backdrop-blur-sm hover:border-secondary-500/30 transition-all duration-500 group">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center mb-6 shadow-lg shadow-secondary-500/25 group-hover:scale-110 transition-transform">
-                                    <TrendingUp className="w-8 h-8 text-white" />
-                                </div>
-
-                                <h3 className="text-2xl font-bold mb-4 text-white">
-                                    Increase Adherence Rates
-                                </h3>
-
-                                <p className="text-gray-400 mb-6 leading-relaxed">
-                                    Gamification keeps patients engaged between clinic visits. Track streaks,
-                                    scores, and milestones to boost compliance by up to 40%.
-                                </p>
-
-                                <ul className="space-y-3">
-                                    {["Daily streak tracking", "Performance analytics", "Progress milestones"].map((item, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-gray-300">
-                                            <CheckCircle className="w-5 h-5 text-secondary-400 flex-shrink-0" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                {/* Visual: Stats */}
-                                <div className="mt-8 p-6 rounded-2xl bg-gray-900/50 border border-gray-700/30">
-                                    <div className="grid grid-cols-3 gap-4 text-center">
-                                        <div>
-                                            <div className="text-2xl font-bold text-white mb-1">+40%</div>
-                                            <span className="text-xs text-gray-500">Adherence</span>
-                                        </div>
-                                        <div>
-                                            <div className="text-2xl font-bold text-white mb-1">87%</div>
-                                            <span className="text-xs text-gray-500">Satisfaction</span>
-                                        </div>
-                                        <div>
-                                            <div className="text-2xl font-bold text-white mb-1">-30%</div>
-                                            <span className="text-xs text-gray-500">Re-visits</span>
-                                        </div>
-                                    </div>
-                                </div>
+                        {/* Feature 2: IoT Sensors */}
+                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200 group p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <div className="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                <Cpu className="w-8 h-8" />
                             </div>
+                            <h3 className="text-xl font-bold mb-3">{t.home.onDeviceAI}</h3>
+                            <p className="text-slate-600 dark:text-slate-400 font-body leading-relaxed">
+                                {t.home.costDescription}
+                            </p>
                         </div>
 
-                        {/* Block 3: Edge AI Cost Reduction */}
-                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-300">
-                            <div className="h-full p-8 rounded-3xl bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 backdrop-blur-sm hover:border-primary-500/30 transition-all duration-500 group">
-                                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 via-primary-600 to-secondary-500 flex items-center justify-center mb-6 shadow-lg shadow-primary-500/25 group-hover:scale-110 transition-transform">
-                                    <Cpu className="w-8 h-8 text-white" />
-                                </div>
-
-                                <h3 className="text-2xl font-bold mb-4 text-white">
-                                    Reduce Cost-Per-Recovery
-                                </h3>
-
-                                <p className="text-gray-400 mb-6 leading-relaxed">
-                                    Our Jetson Nano edge device handles repetitive instruction and form correction.
-                                    Free up your physical therapists to focus on complex cases.
-                                </p>
-
-                                <ul className="space-y-3">
-                                    {["On-device AI processing", "Automated routine feedback", "Therapist time optimization"].map((item, i) => (
-                                        <li key={i} className="flex items-center gap-3 text-gray-300">
-                                            <CheckCircle className="w-5 h-5 text-primary-400 flex-shrink-0" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-
-                                {/* Visual: Cost Savings */}
-                                <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-primary-500/10 to-secondary-500/10 border border-primary-500/20">
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <DollarSign className="w-6 h-6 text-primary-400" />
-                                        <span className="text-3xl font-bold text-white">-50%</span>
-                                    </div>
-                                    <p className="text-sm text-gray-400">Average cost reduction per patient recovery</p>
-                                </div>
+                        {/* Feature 3: Gamified Milestones */}
+                        <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-300 group p-8 rounded-2xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg hover:-translate-y-1">
+                            <div className="size-14 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                <Trophy className="w-8 h-8" />
                             </div>
+                            <h3 className="text-xl font-bold mb-3">{t.home.progressMilestones}</h3>
+                            <p className="text-slate-600 dark:text-slate-400 font-body leading-relaxed">
+                                {t.home.adherenceDescription}
+                            </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Video Demo Section */}
-            <section id="demo" className="py-24 px-6 bg-gray-900">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-700">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                            See the Platform{" "}
-                            <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                                In Action
-                            </span>
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                            Watch how our AI guides patient movement and tracks progress
-                        </p>
-                    </div>
-
-                    {/* Main Video */}
-                    <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-gray-700/50 mb-8">
-                            <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative">
-                                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMjIiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIxIiBjeT0iMSIgcj0iMSIvPjwvZz48L2c+PC9zdmc+')] opacity-50" />
-                                <button className="relative z-10 w-24 h-24 bg-gradient-to-br from-primary-500 to-primary-600 rounded-full flex items-center justify-center hover:from-primary-400 hover:to-primary-500 transition-all hover:scale-110 shadow-2xl shadow-primary-500/30">
-                                    <Play className="w-10 h-10 text-white ml-1" fill="white" />
-                                </button>
-                                <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-sm text-gray-400">
-                                    <span>Complete Platform Overview</span>
-                                    <span>3:45</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Video Thumbnails */}
-                    <div className="grid md:grid-cols-3 gap-6 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
-                        {[
-                            { title: "AI Form Correction", duration: "1:20", icon: Activity },
-                            { title: "Patient Dashboard Demo", duration: "2:15", icon: Target },
-                            { title: "Analytics & Reporting", duration: "1:45", icon: TrendingUp },
-                        ].map((video, i) => (
-                            <div
-                                key={i}
-                                className="group relative rounded-2xl overflow-hidden border border-gray-700/50 hover:border-primary-500/30 transition-all cursor-pointer"
-                            >
-                                <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center relative">
-                                    <video.icon className="w-12 h-12 text-gray-600 group-hover:text-primary-400 transition-colors" />
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                                        <div className="w-14 h-14 bg-white/0 group-hover:bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all">
-                                            <Play className="w-6 h-6 text-white ml-0.5" fill="white" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="p-4 bg-gray-800/50">
-                                    <h4 className="font-medium text-white mb-1">{video.title}</h4>
-                                    <span className="text-sm text-gray-500">{video.duration}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Trusted by Experts Section */}
-            <section className="py-24 px-6 bg-gradient-to-b from-gray-900 to-gray-950">
-                <div className="max-w-6xl mx-auto">
-                    <div className="text-center mb-16 scroll-animate opacity-0 translate-y-8 transition-all duration-700">
-                        <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                            Trusted by{" "}
-                            <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                                Leading Clinics
-                            </span>
-                        </h2>
-                        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                            Physical therapy departments worldwide rely on our platform
-                        </p>
-                    </div>
-
-                    <div className="grid md:grid-cols-3 gap-8 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
-                        {[
-                            {
-                                quote: "This platform has transformed how we manage remote patients. Our therapists now focus on complex cases while the AI handles routine monitoring.",
-                                name: "Dr. Sarah Mitchell",
-                                title: "Director of Physical Therapy, Regional Medical Center",
-                            },
-                            {
-                                quote: "We've seen a 40% increase in patient adherence and significantly reduced our cost-per-recovery. The ROI was immediate.",
-                                name: "Dr. James Chen",
-                                title: "Chief of Rehabilitation Services",
-                            },
-                            {
-                                quote: "The edge AI processing means we don't worry about data privacy or cloud costs. It's a complete game-changer for our department.",
-                                name: "Dr. Emily Roberts",
-                                title: "Head of Orthopedic Rehabilitation",
-                            },
-                        ].map((testimonial, i) => (
-                            <div
-                                key={i}
-                                className="p-8 rounded-3xl bg-gradient-to-br from-gray-800/30 to-gray-900/30 border border-gray-700/30 hover:border-primary-500/20 transition-all"
-                            >
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-500/20 to-secondary-500/20 flex items-center justify-center text-2xl font-bold text-primary-400">
-                                        {testimonial.name.split(" ")[1][0]}
+            {/* How It Works Section */}
+            <section id="how-it-works" className="py-20 bg-slate-50 dark:bg-black/20">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row gap-12 items-center">
+                        <div className="flex-1 space-y-8 scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                            <h2 className="text-3xl md:text-4xl font-bold">{t.home.seeInAction} {t.home.inAction}</h2>
+                            <div className="space-y-6">
+                                <div className="flex gap-4">
+                                    <div className="flex-none mt-1">
+                                        <div className="size-8 rounded-full bg-primary flex items-center justify-center font-bold text-[#11221f]">1</div>
                                     </div>
                                     <div>
-                                        <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                                        <p className="text-sm text-gray-500">{testimonial.title}</p>
+                                        <h4 className="text-lg font-bold">{t.home.realTimeMonitoring}</h4>
+                                        <p className="text-slate-600 dark:text-slate-400 font-body">{t.home.watchAIGuides}</p>
                                     </div>
                                 </div>
-                                <p className="text-gray-300 leading-relaxed italic">
-                                    &ldquo;{testimonial.quote}&rdquo;
-                                </p>
+                                <div className="flex gap-4">
+                                    <div className="flex-none mt-1">
+                                        <div className="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold">2</div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-lg font-bold">{t.home.dailyStreak}</h4>
+                                        <p className="text-slate-600 dark:text-slate-400 font-body">{t.home.performanceAnalytics}</p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <div className="flex-none mt-1">
+                                        <div className="size-8 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center font-bold">3</div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-lg font-bold">{t.home.automatedFeedback}</h4>
+                                        <p className="text-slate-600 dark:text-slate-400 font-body">{t.home.therapistOptimization}</p>
+                                    </div>
+                                </div>
                             </div>
-                        ))}
+                        </div>
+
+                        {/* Video Placeholder */}
+                        <div className="flex-1 w-full scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
+                            <div className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-2xl border-4 border-white dark:border-slate-700 aspect-video bg-slate-900">
+                                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-emerald-500/20"></div>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <button className="flex items-center justify-center size-20 rounded-full bg-primary/90 text-[#11221f] backdrop-blur hover:scale-110 transition-transform">
+                                        <Play className="w-10 h-10 ml-1" fill="currentColor" />
+                                    </button>
+                                </div>
+                                <div className="absolute bottom-4 left-4 text-sm text-white/80">
+                                    {t.home.completePlatformOverview} • 3:45
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            {/* Contact Section */}
-            <section id="contact" className="py-24 px-6 bg-gray-950 relative overflow-hidden">
-                {/* Background gradient accent */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-500/5 via-transparent to-secondary-500/5" />
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-px bg-gradient-to-r from-transparent via-primary-500/50 to-transparent" />
-
-                <div className="max-w-4xl mx-auto text-center relative z-10 scroll-animate opacity-0 translate-y-8 transition-all duration-700">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6">
-                        Ready to Modernize Your{" "}
-                        <span className="bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
-                            Physiotherapy Department?
-                        </span>
-                    </h2>
-                    <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                        Schedule a demo to see how our Edge AI platform can reduce costs and improve patient outcomes.
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
-                        <a
-                            href="mailto:partners@physioai.com"
-                            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-primary-500/30 rounded-2xl text-white transition-all"
-                        >
-                            <Mail className="w-6 h-6 text-primary-400" />
-                            <div className="text-left">
-                                <div className="text-sm text-gray-500">Email us</div>
-                                <div className="font-semibold">partners@physioai.com</div>
+            {/* CTA Section */}
+            <section className="py-20">
+                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                    <div className="relative overflow-hidden rounded-3xl bg-[#11221f] px-6 py-16 sm:px-12 sm:py-20 text-center shadow-2xl scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                        <div className="absolute top-0 left-0 w-full h-full opacity-30 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary via-[#11221f] to-[#11221f]"></div>
+                        <div className="relative z-10 flex flex-col items-center gap-6">
+                            <h2 className="text-3xl sm:text-4xl font-bold text-white max-w-2xl">
+                                {t.home.readyToModernize} {t.home.physiotherapyDepartment}
+                            </h2>
+                            <p className="text-slate-300 text-lg max-w-2xl font-body">{t.home.contactDescription}</p>
+                            <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
+                                <button className="flex items-center justify-center h-12 px-8 rounded-xl bg-primary text-[#11221f] text-base font-bold hover:brightness-110 transition-all min-w-[180px]">
+                                    {t.home.requestDemo}
+                                </button>
+                                <Link
+                                    href="/login"
+                                    className="flex items-center justify-center h-12 px-8 rounded-xl bg-white/10 text-white border border-white/20 text-base font-bold hover:bg-white/20 transition-all min-w-[180px]"
+                                >
+                                    {t.home.partnerLogin}
+                                    <ChevronRight className="w-4 h-4 ml-1" />
+                                </Link>
                             </div>
-                        </a>
-                        <a
-                            href="tel:+15551234567"
-                            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 hover:border-primary-500/30 rounded-2xl text-white transition-all"
-                        >
-                            <Phone className="w-6 h-6 text-primary-400" />
-                            <div className="text-left">
-                                <div className="text-sm text-gray-500">Call us</div>
-                                <div className="font-semibold">+1 (555) 123-4567</div>
-                            </div>
-                        </a>
+                        </div>
                     </div>
-
-                    <button
-                        onClick={() => smoothScrollTo('demo')}
-                        className="text-primary-400 hover:text-primary-300 font-medium transition-colors"
-                    >
-                        ← Watch Demo Videos
-                    </button>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-8 px-6 border-t border-gray-800">
-                <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div className="flex items-center gap-2">
-                        <Activity className="w-6 h-6 text-primary-400" />
-                        <span className="font-semibold text-white">PhysioAI Platform</span>
+            <footer className="bg-white dark:bg-[#0d1a18] border-t border-slate-200 dark:border-slate-800 pt-16 pb-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+                        <div className="col-span-2 md:col-span-1">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Image
+                                    src="/assets/pttracker3.png"
+                                    alt="PTTracker Logo"
+                                    width={120}
+                                    height={30}
+                                    className="h-8 w-auto"
+                                />
+                            </div>
+                            <p className="text-sm text-slate-500 font-body">
+                                {t.home.heroDescription.slice(0, 80)}...
+                            </p>
+                        </div>
+                        <div>
+                            <h4 className="font-bold mb-4">{t.home.seeInAction}</h4>
+                            <ul className="space-y-2 text-sm text-slate-500 font-body">
+                                <li><a className="hover:text-primary" href="#features">{t.home.aiFormCorrection}</a></li>
+                                <li><a className="hover:text-primary" href="#features">{t.home.onDeviceAI}</a></li>
+                                <li><a className="hover:text-primary" href="#features">{t.home.progressMilestones}</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="font-bold mb-4">{t.home.trustedBy}</h4>
+                            <ul className="space-y-2 text-sm text-slate-500 font-body">
+                                <li><a className="hover:text-primary" href="#">{t.home.testimonial1Name}</a></li>
+                                <li><a className="hover:text-primary" href="#">{t.home.testimonial2Name}</a></li>
+                                <li><a className="hover:text-primary" href="#">{t.home.testimonial3Name}</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="font-bold mb-4">{t.home.emailUs}</h4>
+                            <ul className="space-y-2 text-sm text-slate-500 font-body">
+                                <li><a className="hover:text-primary" href="mailto:partners@pttracker.com">partners@pttracker.com</a></li>
+                                <li><a className="hover:text-primary" href="#">{t.home.callUs}</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    <p className="text-gray-500 text-sm">
-                        © 2024 Physical Therapy Tracking Portal. All rights reserved.
-                    </p>
-                    <div className="flex items-center gap-6 text-sm text-gray-500">
-                        <Link href="/login" className="hover:text-primary-400 transition-colors">Partner Login</Link>
+                    <div className="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                        <p className="text-sm text-slate-400 font-body">© 2024 {t.home.copyright}</p>
+                        <div className="flex gap-4">
+                            <a className="text-slate-400 hover:text-primary" href="#"><Globe className="w-5 h-5" /></a>
+                            <a className="text-slate-400 hover:text-primary" href="#"><AtSign className="w-5 h-5" /></a>
+                        </div>
                     </div>
                 </div>
             </footer>

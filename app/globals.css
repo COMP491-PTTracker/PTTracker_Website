@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-white;
     font-size: 16px;
     line-height: 1.6;
   }
@@ -78,5 +78,10 @@
 
   .dark-table tr:hover td {
     @apply bg-gray-700/20;
+  }
+
+  /* Glow effect utility */
+  .glow-primary {
+    box-shadow: 0 0 15px rgba(19, 236, 200, 0.4);
   }
 }

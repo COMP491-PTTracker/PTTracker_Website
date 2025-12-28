@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Trash2, Loader2 } from 'lucide-react'
 import { deletePatient } from '@/actions/doctor'
+import { useLanguage } from '@/context/LanguageContext'
 
 interface PatientCardProps {
     patient: {
@@ -17,6 +18,7 @@ interface PatientCardProps {
 export default function PatientCard({ patient }: PatientCardProps) {
     const [isDeleting, setIsDeleting] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
+    const { t } = useLanguage()
 
     const handleDelete = async (e: React.MouseEvent) => {
         e.preventDefault()
@@ -45,25 +47,25 @@ export default function PatientCard({ patient }: PatientCardProps) {
     }
 
     return (
-        <div className="group dark-card hover:shadow-2xl hover:shadow-primary-500/10 relative">
+        <div className="group bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-primary/10 transition-all relative">
             <Link href={`/dashboard/doctor/patient/${patient.id}`} className="block">
                 <div className="flex items-start justify-between">
                     <div className="flex-1">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-14 h-14 bg-gradient-to-br from-primary-500/20 to-secondary-500/20 rounded-full flex items-center justify-center text-2xl font-bold text-primary-400 border border-primary-500/20">
+                            <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-emerald-500/20 rounded-full flex items-center justify-center text-2xl font-bold text-primary border border-primary/20">
                                 {patient.first_name?.charAt(0) || '?'}
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-xl font-semibold text-white group-hover:text-primary-400 transition-colors">
+                                <h3 className="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-primary transition-colors">
                                     {patient.first_name && patient.last_name
                                         ? `${patient.first_name} ${patient.last_name}`
-                                        : 'Unnamed Patient'}
+                                        : t.doctor.unnamedPatient}
                                 </h3>
-                                <p className="text-gray-500 text-sm truncate">{patient.email}</p>
+                                <p className="text-slate-500 dark:text-gray-500 text-sm truncate">{patient.email}</p>
                             </div>
                         </div>
                     </div>
-                    <div className="text-primary-400 opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
+                    <div className="text-primary opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1">
                         <ArrowRight className="w-6 h-6" />
                     </div>
                 </div>
@@ -72,8 +74,8 @@ export default function PatientCard({ patient }: PatientCardProps) {
             {/* Delete Button */}
             <div className="absolute top-3 left-3">
                 {showConfirm ? (
-                    <div className="flex items-center gap-2 bg-gray-800 rounded-lg p-2">
-                        <span className="text-sm text-gray-300">Delete?</span>
+                    <div className="flex items-center gap-2 bg-slate-100 dark:bg-gray-800 rounded-lg p-2 border border-slate-200 dark:border-gray-700">
+                        <span className="text-sm text-slate-600 dark:text-gray-300">{t.doctor.deleteConfirm}</span>
                         <button
                             onClick={handleDelete}
                             disabled={isDeleting}
@@ -82,22 +84,22 @@ export default function PatientCard({ patient }: PatientCardProps) {
                             {isDeleting ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
                             ) : (
-                                <span className="text-xs font-medium px-1">Yes</span>
+                                <span className="text-xs font-medium px-1">{t.common.yes}</span>
                             )}
                         </button>
                         <button
                             onClick={handleCancel}
                             disabled={isDeleting}
-                            className="p-1.5 bg-gray-600 hover:bg-gray-500 text-white rounded-md transition-colors disabled:opacity-50"
+                            className="p-1.5 bg-slate-300 dark:bg-gray-600 hover:bg-slate-400 dark:hover:bg-gray-500 text-slate-700 dark:text-white rounded-md transition-colors disabled:opacity-50"
                         >
-                            <span className="text-xs font-medium px-1">No</span>
+                            <span className="text-xs font-medium px-1">{t.common.no}</span>
                         </button>
                     </div>
                 ) : (
                     <button
                         onClick={handleDelete}
-                        className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
-                        title="Delete patient"
+                        className="p-2 text-slate-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
+                        title={t.doctor.deletePatient}
                     >
                         <Trash2 className="w-5 h-5" />
                     </button>

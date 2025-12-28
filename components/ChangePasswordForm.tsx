@@ -3,11 +3,13 @@
 import { changePassword } from '@/actions/auth'
 import { useState } from 'react'
 import { Lock, Eye, EyeOff, CheckCircle, AlertCircle, RefreshCw } from 'lucide-react'
+import { useLanguage } from '@/context/LanguageContext'
 
 export default function ChangePasswordForm() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [success, setSuccess] = useState(false)
+    const { t } = useLanguage()
 
     // Password values for instant validation
     const [newPassword, setNewPassword] = useState('')
@@ -44,28 +46,28 @@ export default function ChangePasswordForm() {
     }
 
     return (
-        <div className="dark-card w-full max-w-md">
+        <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-8 shadow-lg w-full max-w-md">
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
-                    <Lock className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                    <Lock className="w-6 h-6 text-[#11221f]" />
                 </div>
                 <div>
-                    <h2 className="text-xl font-semibold text-white">Change Password</h2>
-                    <p className="text-gray-400 text-sm">Update your account password</p>
+                    <h2 className="text-xl font-semibold text-slate-900 dark:text-white">{t.settings.changePassword}</h2>
+                    <p className="text-slate-500 dark:text-gray-400 text-sm">{t.settings.updateAccountPassword}</p>
                 </div>
             </div>
 
             {/* Success Message */}
             {success && (
-                <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-400 flex items-start gap-3">
+                <div className="mb-6 p-4 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-xl text-green-600 dark:text-green-400 flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                    <div>Password changed successfully!</div>
+                    <div>{t.settings.passwordChanged}</div>
                 </div>
             )}
 
             {/* Error Message */}
             {error && (
-                <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 flex items-start gap-3">
+                <div className="mb-6 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-xl text-red-600 dark:text-red-400 flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
                     <div>{error}</div>
                 </div>
@@ -74,9 +76,9 @@ export default function ChangePasswordForm() {
             <form action={handleSubmit} className="space-y-5">
                 {/* Current Password */}
                 <div>
-                    <label htmlFor="currentPassword" className="dark-label flex items-center gap-2 mb-2">
-                        <Lock className="w-4 h-4 text-primary-400" />
-                        Current Password
+                    <label htmlFor="currentPassword" className="block text-slate-700 dark:text-gray-300 font-semibold mb-2 flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-primary" />
+                        {t.settings.currentPassword}
                     </label>
                     <div className="relative">
                         <input
@@ -84,14 +86,14 @@ export default function ChangePasswordForm() {
                             name="currentPassword"
                             type={showCurrent ? 'text' : 'password'}
                             required
-                            className="dark-input pr-12"
-                            placeholder="Enter current password"
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-gray-800/50 border border-slate-300 dark:border-gray-700/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 transition-all pr-12"
+                            placeholder={t.settings.enterCurrentPassword}
                             disabled={loading}
                         />
                         <button
                             type="button"
                             onClick={() => setShowCurrent(!showCurrent)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-300 transition-colors"
                             tabIndex={-1}
                         >
                             {showCurrent ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -101,9 +103,9 @@ export default function ChangePasswordForm() {
 
                 {/* New Password */}
                 <div>
-                    <label htmlFor="newPassword" className="dark-label flex items-center gap-2 mb-2">
-                        <Lock className="w-4 h-4 text-primary-400" />
-                        New Password
+                    <label htmlFor="newPassword" className="block text-slate-700 dark:text-gray-300 font-semibold mb-2 flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-primary" />
+                        {t.settings.newPassword}
                     </label>
                     <div className="relative">
                         <input
@@ -111,8 +113,8 @@ export default function ChangePasswordForm() {
                             name="newPassword"
                             type={showNew ? 'text' : 'password'}
                             required
-                            className={`dark-input pr-12 ${passwordTooShort ? 'border-red-500/50 focus:border-red-500' : ''}`}
-                            placeholder="Enter new password"
+                            className={`w-full px-4 py-3 bg-slate-50 dark:bg-gray-800/50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 transition-all pr-12 ${passwordTooShort ? 'border-red-400 dark:border-red-500/50' : 'border-slate-300 dark:border-gray-700/50'}`}
+                            placeholder={t.settings.enterNewPassword}
                             disabled={loading}
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
@@ -120,25 +122,25 @@ export default function ChangePasswordForm() {
                         <button
                             type="button"
                             onClick={() => setShowNew(!showNew)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-300 transition-colors"
                             tabIndex={-1}
                         >
                             {showNew ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
                     </div>
                     {passwordTooShort && (
-                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                        <p className="text-red-500 dark:text-red-400 text-sm mt-2 flex items-center gap-1">
                             <AlertCircle className="w-4 h-4" />
-                            Password must be at least 6 characters
+                            {t.settings.passwordMinLength}
                         </p>
                     )}
                 </div>
 
                 {/* Confirm New Password */}
                 <div>
-                    <label htmlFor="confirmPassword" className="dark-label flex items-center gap-2 mb-2">
-                        <Lock className="w-4 h-4 text-primary-400" />
-                        Confirm New Password
+                    <label htmlFor="confirmPassword" className="block text-slate-700 dark:text-gray-300 font-semibold mb-2 flex items-center gap-2">
+                        <Lock className="w-4 h-4 text-primary" />
+                        {t.settings.confirmNewPassword}
                     </label>
                     <div className="relative">
                         <input
@@ -146,8 +148,8 @@ export default function ChangePasswordForm() {
                             name="confirmPassword"
                             type={showConfirm ? 'text' : 'password'}
                             required
-                            className={`dark-input pr-12 ${passwordsDoNotMatch ? 'border-red-500/50 focus:border-red-500' : ''}`}
-                            placeholder="Confirm new password"
+                            className={`w-full px-4 py-3 bg-slate-50 dark:bg-gray-800/50 border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary/50 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 transition-all pr-12 ${passwordsDoNotMatch ? 'border-red-400 dark:border-red-500/50' : 'border-slate-300 dark:border-gray-700/50'}`}
+                            placeholder={t.settings.confirmNewPasswordPlaceholder}
                             disabled={loading}
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
@@ -155,16 +157,16 @@ export default function ChangePasswordForm() {
                         <button
                             type="button"
                             onClick={() => setShowConfirm(!showConfirm)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300 transition-colors"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-gray-400 hover:text-slate-600 dark:hover:text-gray-300 transition-colors"
                             tabIndex={-1}
                         >
                             {showConfirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                         </button>
                     </div>
                     {passwordsDoNotMatch && (
-                        <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                        <p className="text-red-500 dark:text-red-400 text-sm mt-2 flex items-center gap-1">
                             <AlertCircle className="w-4 h-4" />
-                            Passwords do not match
+                            {t.settings.passwordsDoNotMatch}
                         </p>
                     )}
                 </div>
@@ -173,17 +175,17 @@ export default function ChangePasswordForm() {
                 <button
                     type="submit"
                     disabled={loading || passwordTooShort || passwordsDoNotMatch}
-                    className="w-full dark-btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full px-6 py-3 bg-primary hover:brightness-110 text-[#11221f] font-semibold rounded-xl transition-all glow-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                     {loading ? (
                         <>
                             <RefreshCw className="w-5 h-5 animate-spin" />
-                            Updating...
+                            {t.settings.updating}
                         </>
                     ) : (
                         <>
                             <Lock className="w-5 h-5" />
-                            Update Password
+                            {t.settings.updatePassword}
                         </>
                     )}
                 </button>
