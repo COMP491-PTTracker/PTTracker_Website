@@ -96,7 +96,7 @@ export default function PatientDetailClient({ patient, currentStreak, logs }: Pa
 
             {/* Main Content */}
             <main className="max-w-7xl mx-auto px-6 py-8">
-                <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg">
+                <div className="bg-white dark:bg-gradient-to-br dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg">
                     <h2 className="text-2xl font-semibold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
                         <Activity className="w-7 h-7 text-primary" />
                         {t.patientDetail.exerciseResults}

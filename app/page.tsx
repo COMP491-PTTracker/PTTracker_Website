@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Snowfall from "react-snowfall";
 import {
     Play,
     CheckCircle,
@@ -11,12 +12,14 @@ import {
     Cpu,
     Trophy,
     ChevronRight,
+    Snowflake,
     Globe,
     AtSign,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useTheme } from "@/context/ThemeContext";
 
 // Hook for scroll animations
 function useScrollAnimation() {
@@ -47,9 +50,27 @@ function useScrollAnimation() {
 export default function HomePage() {
     const scrollRef = useScrollAnimation();
     const { t } = useLanguage();
+    const { theme } = useTheme();
+    const [snowEnabled, setSnowEnabled] = useState(true);
 
     return (
         <div ref={scrollRef} className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-300">
+            {/* Snowfall Effect */}
+            {snowEnabled && (
+                <Snowfall
+                    snowflakeCount={150}
+                    radius={[0.5, 3.0]}
+                    speed={[0.5, 2]}
+                    color={theme === 'dark' ? "#dacfeaff" : "#7a8a9a"}
+                    style={{
+                        position: 'fixed',
+                        width: '100vw',
+                        height: '100vh',
+                        zIndex: 9999,
+                        pointerEvents: 'none',
+                    }}
+                />
+            )}
             {/* Navigation - Fixed Header (always visible) */}
             <header className="fixed top-0 left-0 right-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md">
                 <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -75,6 +96,13 @@ export default function HomePage() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setSnowEnabled(prev => !prev)}
+                            className={`flex h-10 w-10 items-center justify-center rounded-xl transition-colors ${snowEnabled ? 'bg-primary text-[#11221f]' : 'bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700'}`}
+                            aria-label="Toggle snow"
+                        >
+                            <Snowflake className="w-5 h-5" />
+                        </button>
                         <LanguageToggle />
                         <ThemeToggle />
                         <Link

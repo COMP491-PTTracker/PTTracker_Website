@@ -47,7 +47,7 @@ export default function PatientCard({ patient }: PatientCardProps) {
     }
 
     return (
-        <div className="group bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-primary/10 transition-all relative">
+        <div className="group bg-white dark:bg-gradient-to-br dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-6 shadow-lg hover:shadow-xl hover:shadow-primary/10 transition-all relative">
             <Link href={`/dashboard/doctor/patient/${patient.id}`} className="block">
                 <div className="flex items-start justify-between">
                     <div className="flex-1">

@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Smooth theme transition */
+html,
+html * {
+  transition: background-color 500ms ease,
+    color 500ms ease,
+    border-color 800ms ease,
+    fill 1500ms ease,
+    stroke 500ms ease;
+}
+
 @layer base {
   body {
     @apply bg-background-light dark:bg-background-dark text-slate-900 dark:text-white;

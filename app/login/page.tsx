@@ -50,7 +50,7 @@ export default function LoginPage() {
             />
 
             <div className="max-w-md w-full mx-6 relative z-10">
-                <div className="bg-white dark:bg-gradient-to-br dark:from-gray-800/50 dark:to-gray-900/50 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-8 shadow-xl">
+                <div className="bg-white dark:bg-gradient-to-br dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl p-8 shadow-xl">
                     <div className="text-center mb-8">
                         <Link href="/" className="mb-4 block">
                             <Image
