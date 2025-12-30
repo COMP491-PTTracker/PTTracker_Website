@@ -106,6 +106,13 @@ export default function HomePage() {
                         <LanguageToggle />
                         <ThemeToggle />
                         <Link
+                            href="/leaderboard"
+                            className="hidden sm:flex h-10 items-center justify-center rounded-xl bg-primary/10 text-primary px-4 text-sm font-bold hover:bg-primary/20 transition-colors"
+                        >
+                            <Trophy className="w-4 h-4 mr-2" />
+                            {t.leaderboard.viewLeaderboard}
+                        </Link>
+                        <Link
                             href="/login"
                             className="hidden sm:flex h-10 items-center justify-center rounded-xl bg-slate-200 dark:bg-slate-800 px-4 text-sm font-bold text-slate-900 dark:text-white hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"
                         >

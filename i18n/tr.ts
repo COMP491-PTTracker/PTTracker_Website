@@ -206,4 +206,20 @@ export const tr: TranslationKeys = {
         patientCreatedSuccessfully: "Hasta başarıyla oluşturuldu!",
         repsOutOfRange: "1-99 arasında olmalı",
     },
+
+    // Leaderboard
+    leaderboard: {
+        title: "Skor Tablosu",
+        subtitle: "Hastaların egzersiz performansına göre sıralamasını görün",
+        allExercises: "Tüm Egzersizler",
+        filterByExercise: "Egzersize göre filtrele",
+        rank: "Sıra",
+        patient: "Hasta",
+        exercise: "Egzersiz",
+        score: "Skor",
+        totalReps: "Toplam Tekrar",
+        accuracy: "Doğruluk",
+        noResults: "Sonuç bulunamadı",
+        viewLeaderboard: "Skor Tablosunu Görüntüle",
+    },
 };

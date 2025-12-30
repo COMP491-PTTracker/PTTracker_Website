@@ -202,6 +202,22 @@ export const en = {
         patientCreatedSuccessfully: "Patient created successfully!",
         repsOutOfRange: "Must be 1-99",
     },
+
+    // Leaderboard
+    leaderboard: {
+        title: "Leaderboard",
+        subtitle: "See how patients rank by exercise performance",
+        allExercises: "All Exercises",
+        filterByExercise: "Filter by exercise",
+        rank: "Rank",
+        patient: "Patient",
+        exercise: "Exercise",
+        score: "Score",
+        totalReps: "Total Reps",
+        accuracy: "Accuracy",
+        noResults: "No results found",
+        viewLeaderboard: "View Leaderboard",
+    },
 };
 
 export type TranslationKeys = typeof en;
