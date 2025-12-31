@@ -207,6 +207,33 @@ export const tr: TranslationKeys = {
         repsOutOfRange: "1-99 arasında olmalı",
     },
 
+    // Our Team
+    ourTeam: {
+        navButton: "Ekibimiz",
+        title: "Ekibimiz",
+        subtitle: "PTTracker'ın arkasındaki ekiple tanışın",
+        githubRepos: "GitHub Depoları",
+        mainRepo: "PTTracker Website",
+        mainRepoDesc: "PTTracker için Next.js web platformu",
+        aiRepo: "Physical Therapy Tracker",
+        aiRepoDesc: "Yapay zeka destekli hareket takip sistemi",
+        member1Name: "Anıl Arda Ayık",
+        member1Role: "Öğrenci",
+        member1Desc: "",
+        member2Name: "Atalay Görgün",
+        member2Role: "Öğrenci",
+        member2Desc: "",
+        member3Name: "Hejar Feryal Pınar",
+        member3Role: "Öğrenci",
+        member3Desc: "",
+        member4Name: "Helin Naz Yaşar",
+        member4Role: "Öğrenci",
+        member4Desc: "",
+        member5Name: "Melih Okşak",
+        member5Role: "Öğrenci",
+        member5Desc: "",
+    },
+
     // Leaderboard
     leaderboard: {
         title: "Skor Tablosu",

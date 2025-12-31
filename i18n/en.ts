@@ -203,6 +203,33 @@ export const en = {
         repsOutOfRange: "Must be 1-99",
     },
 
+    // Our Team
+    ourTeam: {
+        navButton: "Our Team",
+        title: "Our Team",
+        subtitle: "Meet the people behind PTTracker",
+        githubRepos: "GitHub Repositories",
+        mainRepo: "PTTracker Website",
+        mainRepoDesc: "Next.js web platform for PTTracker",
+        aiRepo: "Physical Therapy Tracker",
+        aiRepoDesc: "AI-powered motion tracking system",
+        member1Name: "Anıl Arda Ayık",
+        member1Role: "Student",
+        member1Desc: "",
+        member2Name: "Atalay Görgün",
+        member2Role: "Student",
+        member2Desc: "",
+        member3Name: "Hejar Feryal Pınar",
+        member3Role: "Student",
+        member3Desc: "",
+        member4Name: "Helin Naz Yaşar",
+        member4Role: "Student",
+        member4Desc: "",
+        member5Name: "Melih Okşak",
+        member5Role: "Student",
+        member5Desc: "",
+    },
+
     // Leaderboard
     leaderboard: {
         title: "Leaderboard",

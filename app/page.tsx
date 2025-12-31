@@ -15,6 +15,8 @@ import {
     Snowflake,
     Globe,
     AtSign,
+    Users,
+    Github,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import LanguageToggle from "@/components/LanguageToggle";
@@ -52,6 +54,35 @@ export default function HomePage() {
     const { t } = useLanguage();
     const { theme } = useTheme();
     const [snowEnabled, setSnowEnabled] = useState(true);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    const demoImages = ["/assets/demo1.png", "/assets/demo2.png", "/assets/demo3.png"];
+    const demoVideos = ["/assets/demovid.mp4", "/assets/demovid2.mp4"];
+
+    // Cycle through hero images every 5 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentImageIndex((prev) => (prev + 1) % demoImages.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [demoImages.length]);
+
+    // Handle video end - switch to next video
+    const handleVideoEnd = () => {
+        setCurrentVideoIndex((prev) => (prev + 1) % demoVideos.length);
+    };
+
+    // When video source changes, play the new video
+    useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.load();
+            videoRef.current.play().catch(() => {
+                // Autoplay may be blocked by browser, ignore error
+            });
+        }
+    }, [currentVideoIndex]);
 
     return (
         <div ref={scrollRef} className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased transition-colors duration-300">
@@ -90,8 +121,7 @@ export default function HomePage() {
 
                     {/* Nav Links */}
                     <nav className="hidden md:flex items-center gap-8">
-                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#features">{t.home.seeInAction}</a>
-                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#how-it-works">{t.home.inAction}</a>
+                        <a className="text-sm font-medium hover:text-primary transition-colors" href="#our-team">{t.ourTeam.navButton}</a>
                     </nav>
 
                     {/* Actions */}
@@ -118,9 +148,7 @@ export default function HomePage() {
                         >
                             {t.login.signIn}
                         </Link>
-                        <button className="flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-bold text-[#11221f] hover:brightness-110 transition-colors glow-primary">
-                            {t.home.requestDemo}
-                        </button>
+
                     </div>
                 </div>
             </header>
@@ -223,32 +251,21 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        {/* Hero Image */}
+                        {/* Hero Image Carousel */}
                         <div className="relative lg:h-auto scroll-animate opacity-0 translate-y-8 transition-all duration-700">
                             <div className="absolute -inset-4 bg-primary/20 blur-3xl rounded-full opacity-50"></div>
-                            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700 bg-gradient-to-br from-slate-100 dark:from-slate-800 to-slate-200 dark:to-slate-900">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <svg className="w-48 h-64 text-primary/30" viewBox="0 0 100 150" fill="none" stroke="currentColor" strokeWidth="2">
-                                        {/* Head */}
-                                        <circle cx="50" cy="15" r="10" />
-                                        {/* Body */}
-                                        <line x1="50" y1="25" x2="50" y2="70" />
-                                        {/* Arms */}
-                                        <line x1="50" y1="35" x2="20" y2="55" />
-                                        <line x1="50" y1="35" x2="80" y2="55" />
-                                        {/* Legs */}
-                                        <line x1="50" y1="70" x2="30" y2="110" />
-                                        <line x1="50" y1="70" x2="70" y2="110" />
-                                        {/* Joints */}
-                                        <circle cx="50" cy="35" r="3" className="fill-primary" />
-                                        <circle cx="20" cy="55" r="3" className="fill-primary" />
-                                        <circle cx="80" cy="55" r="3" className="fill-primary" />
-                                        <circle cx="50" cy="70" r="3" className="fill-primary" />
-                                        <circle cx="30" cy="110" r="3" className="fill-primary" />
-                                        <circle cx="70" cy="110" r="3" className="fill-primary" />
-                                    </svg>
-                                </div>
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#11221f] via-transparent to-transparent opacity-80"></div>
+                            <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
+                                {demoImages.map((src, index) => (
+                                    <Image
+                                        key={src}
+                                        src={src}
+                                        alt={`PTTracker Demo ${index + 1} - AI-powered motion tracking`}
+                                        fill
+                                        className={`object-cover transition-opacity duration-500 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+                                        priority={index === 0}
+                                    />
+                                ))}
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#11221f] via-transparent to-transparent opacity-60"></div>
                                 <div className="absolute bottom-6 left-6 right-6">
                                     <div className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-md rounded-lg px-3 py-2 text-primary border border-primary/30">
                                         <CheckCircle className="w-5 h-5 animate-bounce" />
@@ -366,18 +383,129 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        {/* Video Placeholder */}
+                        {/* Demo Video - Autoplay Carousel */}
                         <div className="flex-1 w-full scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
-                            <div className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-2xl border-4 border-white dark:border-slate-700 aspect-video bg-slate-900">
-                                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-emerald-500/20"></div>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <button className="flex items-center justify-center size-20 rounded-full bg-primary/90 text-[#11221f] backdrop-blur hover:scale-110 transition-transform">
-                                        <Play className="w-10 h-10 ml-1" fill="currentColor" />
-                                    </button>
+                            <div className="relative overflow-hidden rounded-2xl shadow-2xl border-4 border-white dark:border-slate-700 aspect-video bg-slate-900">
+                                {demoVideos.map((src, index) => (
+                                    <video
+                                        key={src}
+                                        ref={index === currentVideoIndex ? videoRef : null}
+                                        className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${index === currentVideoIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+                                        autoPlay={index === currentVideoIndex}
+                                        muted
+                                        playsInline
+                                        onEnded={index === currentVideoIndex ? handleVideoEnd : undefined}
+                                        src={src}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Our Team Section */}
+            <section id="our-team" className="py-24 bg-white dark:bg-[#11221f]">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Section Header */}
+                    <div className="mb-12 text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">{t.ourTeam.title}</h2>
+                        <p className="text-lg text-slate-600 dark:text-slate-300 font-body">{t.ourTeam.subtitle}</p>
+                    </div>
+
+                    {/* GitHub Repos */}
+                    <div className="mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <Github className="w-6 h-6" />
+                            {t.ourTeam.githubRepos}
+                        </h3>
+                        <div className="flex flex-wrap gap-4">
+                            <a
+                                href="https://github.com/COMP491-PTTracker/PTTracker_Website"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
+                            >
+                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                    <Github className="w-6 h-6" />
                                 </div>
-                                <div className="absolute bottom-4 left-4 text-sm text-white/80">
-                                    {t.home.completePlatformOverview} • 3:45
+                                <div>
+                                    <h4 className="font-bold">{t.ourTeam.mainRepo}</h4>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.mainRepoDesc}</p>
                                 </div>
+                            </a>
+                            <a
+                                href="https://github.com/COMP491-PTTracker/comp491_Physical-Therapy-Tracker"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
+                            >
+                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                    <Cpu className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold">{t.ourTeam.aiRepo}</h4>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.aiRepoDesc}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Team Members - Horizontal Scroll */}
+                    <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <Users className="w-6 h-6" />
+                            {t.ourTeam.title}
+                        </h3>
+                        <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+                            {/* Team Member 1 */}
+                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-primary/40 to-emerald-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-primary" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member1Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member1Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member1Desc}</p>
+                            </div>
+
+                            {/* Team Member 2 */}
+                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-blue-400/40 to-purple-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-blue-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member2Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member2Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member2Desc}</p>
+                            </div>
+
+                            {/* Team Member 3 */}
+                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-orange-400/40 to-red-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-orange-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member3Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member3Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member3Desc}</p>
+                            </div>
+
+                            {/* Team Member 4 */}
+                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-pink-400/40 to-rose-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-pink-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member4Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member4Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member4Desc}</p>
+                            </div>
+
+                            {/* Team Member 5 */}
+                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-cyan-400/40 to-teal-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-cyan-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member5Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member5Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member5Desc}</p>
                             </div>
                         </div>
                     </div>
