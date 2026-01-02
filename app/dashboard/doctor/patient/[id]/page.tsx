@@ -1,5 +1,5 @@
 import { getCurrentUser } from '@/actions/auth'
-import { getPatientExerciseLogs } from '@/actions/doctor'
+import { getPatientExerciseLogs, getPatientAssignedExercises, getExercises } from '@/actions/doctor'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import PatientDetailClient from './PatientDetailClient'
@@ -48,8 +48,14 @@ export default async function PatientDetailPage({
         currentStreak = streakData?.current_streak || 0
     }
 
-    // Get patient's exercise results
+    // Get patient's exercise results (history)
     const logs = await getPatientExerciseLogs(id)
+
+    // Get patient's assigned exercises
+    const assignedExercises = await getPatientAssignedExercises(id)
+
+    // Get all exercises for the assign dropdown
+    const allExercises = await getExercises()
 
     return (
         <PatientDetailClient
@@ -58,8 +64,12 @@ export default async function PatientDetailPage({
                 last_name: patient.last_name,
                 email: patient.email
             }}
+            patientUserId={id}
             currentStreak={currentStreak}
             logs={logs}
+            assignedExercises={assignedExercises}
+            allExercises={allExercises}
         />
     )
 }
+

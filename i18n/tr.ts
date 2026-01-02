@@ -156,6 +156,16 @@ export const tr: TranslationKeys = {
         exerciseResults: "Egzersiz Sonuçları",
         noExerciseResults: "Egzersiz Sonucu Yok",
         noExercisesRecorded: "Bu hasta henüz egzersiz kaydetmedi.",
+        assignedExercises: "Atanmış Egzersizler",
+        noAssignedExercises: "Atanmış Egzersiz Yok",
+        noAssignedExercisesDesc: "Bu hastaya henüz egzersiz atanmamış.",
+        assignExercise: "Egzersiz Ata",
+        repetitions: "Tekrar Sayısı",
+        edit: "Düzenle",
+        selectExercise: "Egzersiz seçin...",
+        assignSuccess: "Egzersiz başarıyla atandı!",
+        updateSuccess: "Program başarıyla güncellendi!",
+        actions: "İşlemler",
     },
 
     // Settings

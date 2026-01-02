@@ -209,6 +209,32 @@ export interface Database {
                     last_completed_date?: string | null
                 }
             }
+            programs: {
+                Row: {
+                    id: number
+                    patient_id: number | null
+                    doctor_id: number | null
+                    exercise_id: number | null
+                    weekly_target: number
+                    created_at: string | null
+                }
+                Insert: {
+                    id?: number
+                    patient_id?: number | null
+                    doctor_id?: number | null
+                    exercise_id?: number | null
+                    weekly_target: number
+                    created_at?: string | null
+                }
+                Update: {
+                    id?: number
+                    patient_id?: number | null
+                    doctor_id?: number | null
+                    exercise_id?: number | null
+                    weekly_target?: number
+                    created_at?: string | null
+                }
+            }
         }
     }
 }

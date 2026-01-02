@@ -152,6 +152,16 @@ export const en = {
         exerciseResults: "Exercise Results",
         noExerciseResults: "No Exercise Results",
         noExercisesRecorded: "This patient hasn't recorded any exercises yet.",
+        assignedExercises: "Assigned Exercises",
+        noAssignedExercises: "No Exercises Assigned",
+        noAssignedExercisesDesc: "This patient has no exercises assigned yet.",
+        assignExercise: "Assign Exercise",
+        repetitions: "Repetitions",
+        edit: "Edit",
+        selectExercise: "Select exercise...",
+        assignSuccess: "Exercise assigned successfully!",
+        updateSuccess: "Program updated successfully!",
+        actions: "Actions",
     },
 
     // Settings

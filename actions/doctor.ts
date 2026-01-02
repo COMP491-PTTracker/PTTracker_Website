@@ -293,3 +293,141 @@ export async function getPatientExerciseLogs(patientUserId: string) {
 
     return results
 }
+
+export async function getPatientAssignedExercises(patientUserId: string) {
+    const supabase = await createClient()
+
+    // First get the patient record for this user
+    const { data: patient } = await supabase
+        .from('patients')
+        .select('id')
+        .eq('user_id', patientUserId)
+        .single()
+
+    if (!patient) {
+        console.error('Patient not found for user:', patientUserId)
+        return []
+    }
+
+    // Get assigned exercises from programs table with exercise details
+    const { data: programs, error } = await supabase
+        .from('programs')
+        .select(`
+            id,
+            exercise_id,
+            weekly_target,
+            created_at,
+            exercises (
+                id,
+                name
+            )
+        `)
+        .eq('patient_id', patient.id)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        console.error('Error fetching assigned exercises:', error)
+        return []
+    }
+
+    // Transform the data for the frontend
+    const assignedExercises = programs?.map(program => ({
+        id: program.id,
+        exercise_id: program.exercise_id,
+        exercise_name: (program.exercises as any)?.name || 'Unknown Exercise',
+        repetitions: program.weekly_target,
+        created_at: program.created_at
+    })) || []
+
+    return assignedExercises
+}
+
+export async function assignExerciseToPatient(
+    patientUserId: string,
+    exerciseId: number,
+    repetitions: number
+) {
+    const supabase = await createClient()
+
+    // Verify the current user is authenticated
+    const {
+        data: { user: currentUser },
+    } = await supabase.auth.getUser()
+
+    if (!currentUser) {
+        return { error: 'Not authenticated' }
+    }
+
+    // Get doctor's id from doctors table
+    const { data: doctorData } = await supabase
+        .from('doctors')
+        .select('id')
+        .eq('user_id', currentUser.id)
+        .single()
+
+    const doctorId = doctorData?.id || null
+
+    // Get the patient record for this user
+    const { data: patient } = await supabase
+        .from('patients')
+        .select('id')
+        .eq('user_id', patientUserId)
+        .single()
+
+    if (!patient) {
+        return { error: 'Patient not found' }
+    }
+
+    // Insert new program (allow duplicate exercises)
+    const { error: insertError } = await supabase
+        .from('programs')
+        .insert({
+            patient_id: patient.id,
+            doctor_id: doctorId,
+            exercise_id: exerciseId,
+            weekly_target: repetitions,
+        } as any)
+
+    if (insertError) {
+        console.error('Error assigning exercise:', insertError)
+        return { error: insertError.message }
+    }
+
+    revalidatePath(`/dashboard/doctor/patient/${patientUserId}`)
+    return { success: true }
+}
+
+export async function updatePatientProgram(
+    programId: number,
+    exerciseId: number,
+    newRepetitions: number
+) {
+    const supabase = await createClient()
+
+    // Verify the current user is authenticated
+    const {
+        data: { user: currentUser },
+    } = await supabase.auth.getUser()
+
+    if (!currentUser) {
+        return { error: 'Not authenticated' }
+    }
+
+    // Update both exercise_id and weekly_target (repetitions) in the programs table
+    const { error: updateError } = await supabase
+        .from('programs')
+        .update({
+            exercise_id: exerciseId,
+            weekly_target: newRepetitions
+        } as any)
+        .eq('id', programId)
+
+    if (updateError) {
+        console.error('Error updating program:', updateError)
+        return { error: updateError.message }
+    }
+
+    revalidatePath('/dashboard/doctor')
+    return { success: true }
+}
+
