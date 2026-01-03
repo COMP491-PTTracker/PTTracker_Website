@@ -53,7 +53,7 @@ export default function HomePage() {
     const scrollRef = useScrollAnimation();
     const { t } = useLanguage();
     const { theme } = useTheme();
-    const [snowEnabled, setSnowEnabled] = useState(true);
+    const [snowEnabled, setSnowEnabled] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
     const videoRef = useRef<HTMLVideoElement>(null);
@@ -89,7 +89,7 @@ export default function HomePage() {
             {/* Snowfall Effect */}
             {snowEnabled && (
                 <Snowfall
-                    snowflakeCount={150}
+                    snowflakeCount={50}
                     radius={[0.5, 3.0]}
                     speed={[0.5, 2]}
                     color={theme === 'dark' ? "#dacfeaff" : "#7a8a9a"}
@@ -196,6 +196,17 @@ export default function HomePage() {
                         >
                             {t.home.alreadyPartner}
                             <ChevronRight className="w-5 h-5" />
+                        </Link>
+                    </div>
+
+                    {/* Leaderboard Button - Mobile Friendly */}
+                    <div className="mt-4 flex justify-center">
+                        <Link
+                            href="/leaderboard"
+                            className="h-12 px-8 rounded-xl bg-primary/10 text-primary border border-primary/30 font-bold text-base hover:bg-primary/20 transition-all flex items-center gap-2"
+                        >
+                            <Trophy className="w-5 h-5" />
+                            {t.leaderboard.viewLeaderboard}
                         </Link>
                     </div>
                 </div>
