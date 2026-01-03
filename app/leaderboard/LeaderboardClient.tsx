@@ -146,23 +146,23 @@ export default function LeaderboardClient({ leaderboardData, exercises }: Leader
                 {/* Leaderboard Table */}
                 <div className="bg-white dark:bg-gradient-to-br dark:from-gray-900/80 dark:to-gray-950/80 backdrop-blur-sm border border-slate-200 dark:border-gray-700/50 rounded-2xl shadow-lg overflow-hidden">
                     {sortedData.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
+                        <div>
+                            <table className="w-full table-fixed">
                                 <thead>
                                     <tr className="bg-slate-50 dark:bg-gray-800/50 border-b border-slate-200 dark:border-gray-700">
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-gray-300">
+                                        <th className="w-12 sm:w-16 px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-slate-700 dark:text-gray-300">
                                             {t.leaderboard.rank}
                                         </th>
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-gray-300">
+                                        <th className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-slate-700 dark:text-gray-300">
                                             {t.leaderboard.patient}
                                         </th>
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-gray-300">
+                                        <th className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-slate-700 dark:text-gray-300">
                                             {t.leaderboard.exercise}
                                         </th>
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-gray-300">
+                                        <th className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-slate-700 dark:text-gray-300">
                                             {t.leaderboard.accuracy}
                                         </th>
-                                        <th className="px-6 py-4 text-left text-sm font-semibold text-slate-700 dark:text-gray-300">
+                                        <th className="hidden sm:table-cell px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-slate-700 dark:text-gray-300">
                                             {t.leaderboard.totalReps}
                                         </th>
                                     </tr>
@@ -174,35 +174,35 @@ export default function LeaderboardClient({ leaderboardData, exercises }: Leader
                                             className={`border-b border-slate-100 dark:border-gray-800 hover:bg-slate-50 dark:hover:bg-gray-800/30 transition-colors ${index < 3 ? 'bg-gradient-to-r from-primary/5 to-transparent' : ''
                                                 }`}
                                         >
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center">
+                                            <td className="px-2 sm:px-4 py-3 sm:py-4">
+                                                <div className="flex items-center justify-center sm:justify-start">
                                                     {getRankIcon(index + 1)}
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4">
-                                                <span className="font-medium text-slate-900 dark:text-white">
+                                            <td className="px-2 sm:px-4 py-3 sm:py-4">
+                                                <span className="font-medium text-xs sm:text-base text-slate-900 dark:text-white truncate block">
                                                     {entry.patient_name}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4">
-                                                <span className="text-slate-600 dark:text-gray-400">
+                                            <td className="px-2 sm:px-4 py-3 sm:py-4">
+                                                <span className="text-xs sm:text-base text-slate-600 dark:text-gray-400 truncate block">
                                                     {entry.exercise_name}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-20 h-2 bg-slate-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                                            <td className="px-2 sm:px-4 py-3 sm:py-4">
+                                                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                                                    <div className="w-12 sm:w-20 h-2 bg-slate-200 dark:bg-gray-700 rounded-full overflow-hidden">
                                                         <div
                                                             className="h-full bg-gradient-to-r from-primary to-emerald-400 rounded-full"
                                                             style={{ width: `${entry.accuracy}%` }}
                                                         />
                                                     </div>
-                                                    <span className="text-sm font-medium text-slate-900 dark:text-white">
+                                                    <span className="text-xs sm:text-sm font-medium text-slate-900 dark:text-white">
                                                         {entry.accuracy.toFixed(1)}%
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4">
+                                            <td className="hidden sm:table-cell px-2 sm:px-4 py-3 sm:py-4">
                                                 <span className="text-slate-600 dark:text-gray-400">
                                                     {entry.total_reps}
                                                 </span>
