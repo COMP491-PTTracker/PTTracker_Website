@@ -127,33 +127,39 @@ export default function PatientDetailClient({
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-100 via-background-light to-slate-50 dark:from-gray-900 dark:via-gray-950 dark:to-background-dark">
-            {/* Toggle Controls - Fixed Position */}
-            <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-                <LanguageToggle />
-                <ThemeToggle />
-            </div>
-
             {/* Header */}
             <header className="bg-white/80 dark:bg-gray-900/50 backdrop-blur-sm shadow-lg dark:shadow-xl border-b border-slate-200 dark:border-gray-800">
                 <div className="max-w-7xl mx-auto px-6 py-6">
-                    <div className="flex items-center gap-4 mb-4">
-                        <Link href="/">
-                            <Image
-                                src="/assets/pttracker3.png"
-                                alt="PTTracker"
-                                width={160}
-                                height={40}
-                                className="h-10 w-auto dark:brightness-0 dark:invert hover:opacity-80 transition-opacity"
-                            />
-                        </Link>
-                        <div className="h-8 w-px bg-slate-300 dark:bg-gray-700"></div>
-                        <Link
-                            href="/dashboard/doctor"
-                            className="text-primary hover:brightness-110 font-medium text-lg inline-flex items-center gap-2 transition-colors group"
-                        >
-                            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-                            {t.patientDetail.backToDashboard}
-                        </Link>
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4">
+                            <Link href="/">
+                                <Image
+                                    src="/assets/pttracker3.png"
+                                    alt="PTTracker"
+                                    width={160}
+                                    height={40}
+                                    className="h-10 w-auto dark:brightness-0 dark:invert hover:opacity-80 transition-opacity"
+                                />
+                            </Link>
+                            <div className="hidden sm:block h-8 w-px bg-slate-300 dark:bg-gray-700"></div>
+                            <Link
+                                href="/dashboard/doctor"
+                                className="hidden sm:inline-flex text-primary hover:brightness-110 font-medium text-lg items-center gap-2 transition-colors group"
+                            >
+                                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                                {t.patientDetail.backToDashboard}
+                            </Link>
+                            <Link
+                                href="/dashboard/doctor"
+                                className="sm:hidden text-primary hover:brightness-110"
+                            >
+                                <ArrowLeft className="w-6 h-6" />
+                            </Link>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <LanguageToggle />
+                            <ThemeToggle />
+                        </div>
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
@@ -211,23 +217,23 @@ export default function PatientDetailClient({
                     </div>
 
                     {assignedExercises && assignedExercises.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
+                        <div>
+                            <table className="w-full table-fixed">
                                 <thead>
                                     <tr className="border-b border-slate-200 dark:border-gray-700/50">
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Activity className="w-5 h-5 text-primary" />
-                                                {t.patient.exercise}
+                                        <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                                                <span className="truncate">{t.patient.exercise}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Target className="w-5 h-5 text-primary" />
-                                                {t.patientDetail.repetitions}
+                                        <th className="w-20 sm:w-28 text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary hidden sm:block" />
+                                                <span className="truncate">{t.patientDetail.repetitions}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
+                                        <th className="w-16 sm:w-24 text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
                                             {t.patientDetail.actions}
                                         </th>
                                     </tr>
@@ -235,21 +241,21 @@ export default function PatientDetailClient({
                                 <tbody>
                                     {assignedExercises.map((exercise) => (
                                         <tr key={exercise.id} className="border-b border-slate-100 dark:border-gray-700/30 hover:bg-slate-50 dark:hover:bg-gray-700/20 transition-colors">
-                                            <td className="py-4 px-4 text-slate-900 dark:text-white font-medium">
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-base text-slate-900 dark:text-white font-medium truncate">
                                                 {exercise.exercise_name}
                                             </td>
-                                            <td className="py-4 px-4">
-                                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4">
+                                                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold">
                                                     {exercise.repetitions}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-4">
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4">
                                                 <button
                                                     onClick={() => openEditModal(exercise)}
-                                                    className="inline-flex items-center gap-2 px-3 py-1.5 text-sm bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-700 dark:text-gray-300 rounded-lg transition-colors"
+                                                    className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 text-slate-700 dark:text-gray-300 rounded-lg transition-colors"
                                                 >
-                                                    <Pencil className="w-4 h-4" />
-                                                    {t.patientDetail.edit}
+                                                    <Pencil className="w-3 h-3 sm:w-4 sm:h-4" />
+                                                    <span className="hidden sm:inline">{t.patientDetail.edit}</span>
                                                 </button>
                                             </td>
                                         </tr>
@@ -276,38 +282,38 @@ export default function PatientDetailClient({
                     </h2>
 
                     {logs && logs.length > 0 ? (
-                        <div className="overflow-x-auto">
-                            <table className="w-full">
+                        <div>
+                            <table className="w-full table-fixed">
                                 <thead>
                                     <tr className="border-b border-slate-200 dark:border-gray-700/50">
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Calendar className="w-5 h-5 text-primary" />
-                                                {t.patient.date}
+                                        <th className="w-20 sm:w-auto text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-primary hidden sm:block" />
+                                                <span>{t.patient.date}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Activity className="w-5 h-5 text-primary" />
-                                                {t.patient.exercise}
+                                        <th className="text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-primary hidden sm:block" />
+                                                <span className="truncate">{t.patient.exercise}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Target className="w-5 h-5 text-primary" />
-                                                {t.patient.repsCorrectTotal}
+                                        <th className="w-16 sm:w-24 text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-primary hidden sm:block" />
+                                                <span className="truncate">{t.patient.repsCorrectTotal}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <CheckCircle className="w-5 h-5 text-primary" />
-                                                {t.patient.accuracy}
+                                        <th className="w-16 sm:w-24 text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-primary hidden sm:block" />
+                                                <span>{t.patient.accuracy}</span>
                                             </div>
                                         </th>
-                                        <th className="text-left py-4 px-4 text-slate-700 dark:text-gray-300 font-semibold">
-                                            <div className="flex items-center gap-2">
-                                                <Clock className="w-5 h-5 text-primary" />
-                                                {t.patient.duration}
+                                        <th className="hidden sm:table-cell w-24 text-left py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-sm text-slate-700 dark:text-gray-300 font-semibold">
+                                            <div className="flex items-center gap-1 sm:gap-2">
+                                                <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                                                <span>{t.patient.duration}</span>
                                             </div>
                                         </th>
                                     </tr>
@@ -315,17 +321,19 @@ export default function PatientDetailClient({
                                 <tbody>
                                     {logs.map((log) => (
                                         <tr key={log.id} className="border-b border-slate-100 dark:border-gray-700/30 hover:bg-slate-50 dark:hover:bg-gray-700/20 transition-colors">
-                                            <td className="py-4 px-4 text-slate-600 dark:text-gray-300">
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-base text-slate-600 dark:text-gray-300">
                                                 {formatDate(log.created_at)}
                                             </td>
-                                            <td className="py-4 px-4 text-slate-900 dark:text-white font-medium">{log.exercise_name}</td>
-                                            <td className="py-4 px-4">
-                                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary font-semibold">
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4 text-xs sm:text-base text-slate-900 dark:text-white font-medium truncate">
+                                                {log.exercise_name}
+                                            </td>
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4">
+                                                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-semibold">
                                                     {log.correct_reps}/{log.total_reps}
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-4">
-                                                <span className={`inline-flex items-center px-3 py-1 rounded-full font-semibold ${log.accuracy >= 80
+                                            <td className="py-3 sm:py-4 px-2 sm:px-4">
+                                                <span className={`inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${log.accuracy >= 80
                                                     ? 'bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400'
                                                     : log.accuracy >= 50
                                                         ? 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-600 dark:text-yellow-400'
@@ -334,7 +342,7 @@ export default function PatientDetailClient({
                                                     {log.accuracy.toFixed(1)}%
                                                 </span>
                                             </td>
-                                            <td className="py-4 px-4 text-slate-600 dark:text-gray-300">
+                                            <td className="hidden sm:table-cell py-3 sm:py-4 px-2 sm:px-4 text-slate-600 dark:text-gray-300">
                                                 {Math.floor(log.duration_sec / 60)}:{(log.duration_sec % 60).toString().padStart(2, '0')}
                                             </td>
                                         </tr>
