@@ -8,18 +8,58 @@ import type { Database } from '@/types/database'
 export async function getAllPatients() {
     const supabase = await createClient()
 
+    // Get current user
+    const {
+        data: { user: currentUser },
+    } = await supabase.auth.getUser()
+
+    if (!currentUser) {
+        console.error('Not authenticated')
+        return []
+    }
+
+    // Get doctor's id from doctors table
+    const { data: doctorData } = await supabase
+        .from('doctors')
+        .select('id')
+        .eq('user_id', currentUser.id)
+        .single()
+
+    if (!doctorData) {
+        console.error('Doctor record not found for user:', currentUser.id)
+        return []
+    }
+
+    // Get patients created by this doctor by joining with patients table
     const { data: patients, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('role', 'patient')
-        .order('first_name', { ascending: true })
+        .from('patients')
+        .select(`
+            user_id,
+            users!inner (
+                id,
+                first_name,
+                last_name,
+                email,
+                role
+            )
+        `)
+        .eq('created_by', doctorData.id)
+        .order('created_at', { ascending: false })
 
     if (error) {
         console.error('Error fetching patients:', error)
         return []
     }
 
-    return patients
+    // Transform the data to match the expected format
+    const transformedPatients = patients?.map(patient => ({
+        id: (patient.users as any).id,
+        first_name: (patient.users as any).first_name,
+        last_name: (patient.users as any).last_name,
+        email: (patient.users as any).email,
+    })) || []
+
+    return transformedPatients
 }
 
 export async function getExercises() {
