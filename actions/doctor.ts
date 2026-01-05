@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/utils/supabase/admin'
 import { createClient } from '@/utils/supabase/server'
 import type { Database } from '@/types/database'
+import { sendWelcomeEmail } from '@/app/actions/register'
 
 export async function getAllPatients() {
     const supabase = await createClient()
@@ -206,6 +207,18 @@ export async function createPatient(formData: FormData) {
             // Note: We don't roll back the patient creation here since the patient was created successfully
             // The doctor can add exercises later if needed
         }
+    }
+
+    // Send welcome email with login credentials
+    const emailResult = await sendWelcomeEmail({
+        email,
+        temporaryPassword: password,
+    })
+
+    if (!emailResult.success) {
+        console.error('Failed to send welcome email:', emailResult.error)
+        // Note: We don't fail the patient creation if email fails
+        // The doctor can manually share credentials if needed
     }
 
     revalidatePath('/dashboard/doctor')
