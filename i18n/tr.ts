@@ -33,15 +33,16 @@ export const tr: TranslationKeys = {
     // Home Page
     home: {
         badge: "Uç Yapay Zeka Destekli Uzaktan Hasta İzleme",
-        // Note: In Turkish, these two lines combine well naturally.
-        heroTitle1: "Uzaktan Hasta Takibini",
-        heroTitle2: "Uç Yapay Zeka ile Otomatikleştirin",
+        heroTitle1: "Uç Yapay Zeka ile",
+        heroTitle2: "Uzaktan Hasta Takibini Otomatikleştirin",
         heroDescription: "Kliniğinizin erişimini genişletin ve maliyetleri düşürün. Yapay zeka destekli hareket takibi ile rutin geri bildirimleri otomatikleştirerek, fizyoterapistlerin karmaşık vakalara odaklanmasını sağlayın.",
+        recoveryReimagined: "İyileşme, Yeniden Tasarlandı.",
+        heroSubtitle: "Evinizin konforundan yapay zeka destekli fizik tedavi.",
         requestDemo: "Demo Talep Et",
         alreadyPartner: "Zaten Partner misiniz? Giriş Yapın",
 
         // Value Proposition
-        builtFor: "Şunlar İçin Tasarlandı:", // Added colon to imply a list follows
+        builtFor: "Kimler İçin?",
         healthcareProviders: "Sağlık Hizmeti Sağlayıcıları",
         reduceCostsSubtitle: "Maliyetleri azaltın, kliniğinizi büyütün ve hasta sonuçlarını iyileştirin",
 
@@ -71,8 +72,8 @@ export const tr: TranslationKeys = {
         avgCostReduction: "Hasta iyileşmesi başına ortalama maliyet tasarrufu",
 
         // Demo Section
-        seeInAction: "Platformu",
-        inAction: "İş Başında Görün", // "Platformu İş Başında Görün" works well
+        seeInAction: "Platformu İş Başında",
+        inAction: "Görün",
         watchAIGuides: "Yapay zekamızın hasta hareketlerini nasıl yönlendirdiğini ve ilerlemeyi nasıl takip ettiğini izleyin",
         completePlatformOverview: "Platforma Genel Bakış",
         aiFormCorrection: "Yapay Zeka Form Düzeltme",
@@ -80,8 +81,8 @@ export const tr: TranslationKeys = {
         analyticsReporting: "Analitik ve Raporlama",
 
         // Testimonials
-        trustedBy: "Bize Güvenen", // Changed from "Güvenilen" to flow into the next line
-        leadingClinics: "Lider Klinikler", // Reads as: "Bize Güvenen Lider Klinikler"
+        trustedBy: "Güvenilir Ortağımız:",
+        leadingClinics: "Lider Klinikler",
         clinicsRelying: "Dünya genelinde fizik tedavi departmanları platformumuza güveniyor",
         testimonial1Quote: "Bu platform uzaktan hasta yönetim şeklimizi dönüştürdü. Yapay zeka rutin takibi yaparken terapistlerimiz artık karmaşık vakalara odaklanabiliyor.",
         testimonial1Name: "Dr. Sarah Mitchell",
@@ -94,7 +95,6 @@ export const tr: TranslationKeys = {
         testimonial3Title: "Ortopedik Rehabilitasyon Başkanı",
 
         // Contact
-        // SWAPPED these lines to match Turkish grammar (Object first, then Verb)
         readyToModernize: "Fizik Tedavi Departmanınızı",
         physiotherapyDepartment: "Modernize Etmeye Hazır mısınız?",
         contactDescription: "Uç Yapay Zeka platformumuzun maliyetleri nasıl azaltabileceğini ve hasta sonuçlarını nasıl iyileştirebileceğini görmek için bir demo planlayın.",
@@ -221,26 +221,27 @@ export const tr: TranslationKeys = {
     ourTeam: {
         navButton: "Ekibimiz",
         title: "Ekibimiz",
+        teamMembers: "Takım Üyeleri",
         subtitle: "PTTracker'ın arkasındaki ekiple tanışın",
-        githubRepos: "GitHub Depoları",
-        mainRepo: "PTTracker Website",
+        githubRepos: "GitHub Repository'leri",
+        mainRepo: "PTTracker Web Sitesi",
         mainRepoDesc: "PTTracker için Next.js web platformu",
         aiRepo: "Physical Therapy Tracker",
         aiRepoDesc: "Yapay zeka destekli hareket takip sistemi",
         member1Name: "Anıl Arda Ayık",
-        member1Role: "Öğrenci",
+        member1Role: "aayik20@ku.edu.tr",
         member1Desc: "",
         member2Name: "Atalay Görgün",
-        member2Role: "Öğrenci",
+        member2Role: "agorgun21@ku.edu.tr",
         member2Desc: "",
         member3Name: "Hejar Feryal Pınar",
-        member3Role: "Öğrenci",
+        member3Role: "hpinar20@ku.edu.tr",
         member3Desc: "",
         member4Name: "Helin Naz Yaşar",
-        member4Role: "Öğrenci",
+        member4Role: "hyasar20@ku.edu.tr",
         member4Desc: "",
         member5Name: "Melih Okşak",
-        member5Role: "Öğrenci",
+        member5Role: "moksak20@ku.edu.tr",
         member5Desc: "",
     },
 

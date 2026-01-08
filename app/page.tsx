@@ -168,7 +168,7 @@ export default function HomePage() {
                             alt="PTTracker"
                             width={800}
                             height={200}
-                            className="h-32 sm:h-44 lg:h-56 w-auto mx-auto dark:brightness-0 dark:invert"
+                            className="h-50 sm:h-72 lg:h-80 w-auto mx-auto dark:brightness-0 dark:invert"
                             priority
                         />
                     </div>
@@ -176,20 +176,20 @@ export default function HomePage() {
                     {/* Powerful Slogan */}
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight mb-6">
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-emerald-400 to-teal-300">
-                            Recovery, Reimagined.
+                            {t.home.recoveryReimagined}
                         </span>
                     </h1>
 
                     <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto mb-10 font-body">
-                        AI-powered physical therapy from the comfort of your home.
+                        {t.home.heroSubtitle}
                     </p>
 
                     {/* CTA Buttons */}
                     <div className="flex flex-wrap gap-4 justify-center">
-                        <button className="h-14 px-10 rounded-xl bg-primary text-[#11221f] font-bold text-lg hover:brightness-110 transition-all flex items-center gap-2 glow-primary">
+                        <a href="#contact" className="h-14 px-10 rounded-xl bg-primary text-[#11221f] font-bold text-lg hover:brightness-110 transition-all flex items-center gap-2 glow-primary">
                             <Heart className="w-5 h-5" />
                             {t.home.requestDemo}
-                        </button>
+                        </a>
                         <Link
                             href="/login"
                             className="h-14 px-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2"
@@ -208,6 +208,158 @@ export default function HomePage() {
                             <Trophy className="w-5 h-5" />
                             {t.leaderboard.viewLeaderboard}
                         </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Our Team Section - Moved here from below */}
+            <section id="our-team" className="relative pt-12 pb-20 lg:pt-20 overflow-hidden bg-white dark:bg-[#11221f]">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                    {/* Section Header */}
+                    <div className="mb-12 text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700">
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4">{t.ourTeam.title}</h2>
+                        <p className="text-lg text-slate-600 dark:text-slate-300 font-body">{t.ourTeam.subtitle}</p>
+                    </div>
+
+                    {/* GitHub Repos */}
+                    <div className="mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <Github className="w-6 h-6" />
+                            {t.ourTeam.githubRepos}
+                        </h3>
+                        <div className="flex flex-wrap gap-4">
+                            <a
+                                href="https://github.com/COMP491-PTTracker/PTTracker_Website"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
+                            >
+                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                    <Github className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold">{t.ourTeam.mainRepo}</h4>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.mainRepoDesc}</p>
+                                </div>
+                            </a>
+                            <a
+                                href="https://github.com/COMP491-PTTracker/comp491_Physical-Therapy-Tracker"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
+                            >
+                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
+                                    <Cpu className="w-6 h-6" />
+                                </div>
+                                <div>
+                                    <h4 className="font-bold">{t.ourTeam.aiRepo}</h4>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.aiRepoDesc}</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* Team Members - Grid Layout: 3 on top, 2 on bottom */}
+                    <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
+                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                            <Users className="w-6 h-6" />
+                            {t.ourTeam.teamMembers}
+                        </h3>
+
+                        {/* Top row - 3 members */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+                            {/* Team Member 1 */}
+                            <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-primary/40 to-emerald-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-primary" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member1Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member1Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member1Desc}</p>
+                            </div>
+
+                            {/* Team Member 2 */}
+                            <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-blue-400/40 to-purple-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-blue-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member2Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member2Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member2Desc}</p>
+                            </div>
+
+                            {/* Team Member 3 */}
+                            <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-orange-400/40 to-red-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-orange-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member3Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member3Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member3Desc}</p>
+                            </div>
+                        </div>
+
+                        {/* Bottom row - 2 members, centered */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                            {/* Team Member 4 */}
+                            <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-pink-400/40 to-rose-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-pink-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member4Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member4Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member4Desc}</p>
+                            </div>
+
+                            {/* Team Member 5 */}
+                            <div className="group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
+                                <div className="size-20 rounded-full bg-gradient-to-br from-cyan-400/40 to-teal-500/40 mb-4 mx-auto flex items-center justify-center">
+                                    <Users className="w-10 h-10 text-cyan-400" />
+                                </div>
+                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member5Name}</h4>
+                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member5Role}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member5Desc}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Contact Info Box */}
+                    <div id="contact" className="mt-12 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-300">
+                        <div className="max-w-xl mx-auto p-6 rounded-2xl bg-gradient-to-br from-primary/10 to-emerald-500/10 border border-primary/30 text-center">
+                            <h3 className="text-xl font-bold mb-3 flex items-center justify-center gap-2">
+                                <AtSign className="w-5 h-5 text-primary" />
+                                {t.home.emailUs}
+                            </h3>
+                            <a
+                                href="mailto:pttracker-comp491-group@ku.edu.tr"
+                                className="text-lg text-primary font-medium hover:underline transition-all"
+                            >
+                                pttracker-comp491-group@ku.edu.tr
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Trusted By Section */}
+            <section className="py-10 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/20">
+                <div className="mx-auto max-w-7xl px-4 text-center">
+                    <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-wider">
+                        {t.home.trustedBy} {t.home.leadingClinics}
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Heart className="w-5 h-5" /> CardioHealth
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Activity className="w-5 h-5" /> OrthoPlus
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Cpu className="w-5 h-5" /> VitalMove
+                        </span>
+                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
+                            <Trophy className="w-5 h-5" /> SafeRecover
+                        </span>
                     </div>
                 </div>
             </section>
@@ -238,10 +390,10 @@ export default function HomePage() {
 
                             {/* CTA Buttons */}
                             <div className="flex flex-wrap gap-4 pt-4">
-                                <button className="h-12 px-8 rounded-xl bg-primary text-[#11221f] font-bold text-base hover:brightness-110 transition-all flex items-center gap-2">
+                                <a href="#contact" className="h-12 px-8 rounded-xl bg-primary text-[#11221f] font-bold text-base hover:brightness-110 transition-all flex items-center gap-2">
                                     <Heart className="w-5 h-5" />
                                     {t.home.requestDemo}
-                                </button>
+                                </a>
                                 <Link
                                     href="/login"
                                     className="h-12 px-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-base hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center gap-2"
@@ -285,29 +437,6 @@ export default function HomePage() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Trusted By Section */}
-            <section className="py-10 border-y border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-black/20">
-                <div className="mx-auto max-w-7xl px-4 text-center">
-                    <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-6 uppercase tracking-wider">
-                        {t.home.trustedBy} {t.home.leadingClinics}
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
-                            <Heart className="w-5 h-5" /> CardioHealth
-                        </span>
-                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
-                            <Activity className="w-5 h-5" /> OrthoPlus
-                        </span>
-                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
-                            <Cpu className="w-5 h-5" /> VitalMove
-                        </span>
-                        <span className="text-xl font-bold text-slate-800 dark:text-slate-300 flex items-center gap-2">
-                            <Trophy className="w-5 h-5" /> SafeRecover
-                        </span>
                     </div>
                 </div>
             </section>
@@ -415,113 +544,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Our Team Section */}
-            <section id="our-team" className="py-24 bg-white dark:bg-[#11221f]">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    {/* Section Header */}
-                    <div className="mb-12 text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700">
-                        <h2 className="text-3xl md:text-4xl font-bold mb-4">{t.ourTeam.title}</h2>
-                        <p className="text-lg text-slate-600 dark:text-slate-300 font-body">{t.ourTeam.subtitle}</p>
-                    </div>
 
-                    {/* GitHub Repos */}
-                    <div className="mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-100">
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                            <Github className="w-6 h-6" />
-                            {t.ourTeam.githubRepos}
-                        </h3>
-                        <div className="flex flex-wrap gap-4">
-                            <a
-                                href="https://github.com/COMP491-PTTracker/PTTracker_Website"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
-                            >
-                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
-                                    <Github className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold">{t.ourTeam.mainRepo}</h4>
-                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.mainRepoDesc}</p>
-                                </div>
-                            </a>
-                            <a
-                                href="https://github.com/COMP491-PTTracker/comp491_Physical-Therapy-Tracker"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="group flex items-center gap-4 p-4 rounded-xl bg-background-light dark:bg-white/5 border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg"
-                            >
-                                <div className="size-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-[#11221f] transition-colors">
-                                    <Cpu className="w-6 h-6" />
-                                </div>
-                                <div>
-                                    <h4 className="font-bold">{t.ourTeam.aiRepo}</h4>
-                                    <p className="text-sm text-slate-500 dark:text-slate-400">{t.ourTeam.aiRepoDesc}</p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    {/* Team Members - Horizontal Scroll */}
-                    <div className="scroll-animate opacity-0 translate-y-8 transition-all duration-700 delay-200">
-                        <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                            <Users className="w-6 h-6" />
-                            {t.ourTeam.title}
-                        </h3>
-                        <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
-                            {/* Team Member 1 */}
-                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
-                                <div className="size-20 rounded-full bg-gradient-to-br from-primary/40 to-emerald-500/40 mb-4 mx-auto flex items-center justify-center">
-                                    <Users className="w-10 h-10 text-primary" />
-                                </div>
-                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member1Name}</h4>
-                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member1Role}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member1Desc}</p>
-                            </div>
-
-                            {/* Team Member 2 */}
-                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
-                                <div className="size-20 rounded-full bg-gradient-to-br from-blue-400/40 to-purple-500/40 mb-4 mx-auto flex items-center justify-center">
-                                    <Users className="w-10 h-10 text-blue-400" />
-                                </div>
-                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member2Name}</h4>
-                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member2Role}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member2Desc}</p>
-                            </div>
-
-                            {/* Team Member 3 */}
-                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
-                                <div className="size-20 rounded-full bg-gradient-to-br from-orange-400/40 to-red-500/40 mb-4 mx-auto flex items-center justify-center">
-                                    <Users className="w-10 h-10 text-orange-400" />
-                                </div>
-                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member3Name}</h4>
-                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member3Role}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member3Desc}</p>
-                            </div>
-
-                            {/* Team Member 4 */}
-                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
-                                <div className="size-20 rounded-full bg-gradient-to-br from-pink-400/40 to-rose-500/40 mb-4 mx-auto flex items-center justify-center">
-                                    <Users className="w-10 h-10 text-pink-400" />
-                                </div>
-                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member4Name}</h4>
-                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member4Role}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member4Desc}</p>
-                            </div>
-
-                            {/* Team Member 5 */}
-                            <div className="flex-none w-72 snap-start group p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-white/5 dark:to-white/[0.02] border border-slate-200 dark:border-white/10 hover:border-primary/50 transition-all hover:shadow-lg">
-                                <div className="size-20 rounded-full bg-gradient-to-br from-cyan-400/40 to-teal-500/40 mb-4 mx-auto flex items-center justify-center">
-                                    <Users className="w-10 h-10 text-cyan-400" />
-                                </div>
-                                <h4 className="text-lg font-bold text-center mb-1">{t.ourTeam.member5Name}</h4>
-                                <p className="text-sm text-primary font-medium text-center mb-3">{t.ourTeam.member5Role}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-400 text-center font-body">{t.ourTeam.member5Desc}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             {/* CTA Section */}
             <section className="py-20">
@@ -534,9 +557,9 @@ export default function HomePage() {
                             </h2>
                             <p className="text-slate-300 text-lg max-w-2xl font-body">{t.home.contactDescription}</p>
                             <div className="flex flex-col sm:flex-row gap-4 mt-4 w-full justify-center">
-                                <button className="flex items-center justify-center h-12 px-8 rounded-xl bg-primary text-[#11221f] text-base font-bold hover:brightness-110 transition-all min-w-[180px]">
+                                <a href="#contact" className="flex items-center justify-center h-12 px-8 rounded-xl bg-primary text-[#11221f] text-base font-bold hover:brightness-110 transition-all min-w-[180px]">
                                     {t.home.requestDemo}
-                                </button>
+                                </a>
                                 <Link
                                     href="/login"
                                     className="flex items-center justify-center h-12 px-8 rounded-xl bg-white/10 text-white border border-white/20 text-base font-bold hover:bg-white/20 transition-all min-w-[180px]"
@@ -587,13 +610,13 @@ export default function HomePage() {
                         <div>
                             <h4 className="font-bold mb-4">{t.home.emailUs}</h4>
                             <ul className="space-y-2 text-sm text-slate-500 font-body">
-                                <li><a className="hover:text-primary" href="mailto:partners@pttracker.com">partners@pttracker.com</a></li>
+                                <li><a className="hover:text-primary" href="mailto:pttracker-comp491-group@ku.edu.tr">pttracker-comp491-group@ku.edu.tr</a></li>
                                 <li><a className="hover:text-primary" href="#">{t.home.callUs}</a></li>
                             </ul>
                         </div>
                     </div>
                     <div className="border-t border-slate-200 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p className="text-sm text-slate-400 font-body">© 2024 {t.home.copyright}</p>
+                        <p className="text-sm text-slate-400 font-body">© 2026 {t.home.copyright}</p>
                         <div className="flex gap-4">
                             <a className="text-slate-400 hover:text-primary" href="#"><Globe className="w-5 h-5" /></a>
                             <a className="text-slate-400 hover:text-primary" href="#"><AtSign className="w-5 h-5" /></a>

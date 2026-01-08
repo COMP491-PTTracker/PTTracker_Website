@@ -44,13 +44,52 @@ export default function LeaderboardClient({ leaderboardData, exercises }: Leader
     const getRankIcon = (rank: number) => {
         switch (rank) {
             case 1:
-                return <Medal className="w-6 h-6 text-yellow-500" />
+                return (
+                    <span
+                        className="text-base font-black animate-pulse"
+                        style={{
+                            background: 'linear-gradient(135deg, #ffd700 0%, #ffed4e 25%, #ffd700 50%, #ffaa00 75%, #ffd700 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3))',
+                        }}
+                    >
+                        1
+                    </span>
+                )
             case 2:
-                return <Medal className="w-6 h-6 text-gray-400" />
+                return (
+                    <span
+                        className="text-base font-black"
+                        style={{
+                            background: 'linear-gradient(135deg, #e8e8e8 0%, #ffffff 25%, #c0c0c0 50%, #a8a8a8 75%, #d0d0d0 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            filter: 'drop-shadow(0 0 4px rgba(192, 192, 192, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2))',
+                        }}
+                    >
+                        2
+                    </span>
+                )
             case 3:
-                return <Medal className="w-6 h-6 text-amber-600" />
+                return (
+                    <span
+                        className="text-xl font-black"
+                        style={{
+                            background: 'linear-gradient(135deg, #cd7f32 0%, #f4a460 25%, #cd7f32 50%, #8b4513 75%, #cd7f32 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            filter: 'drop-shadow(0 0 4px rgba(205, 127, 50, 0.6)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.2))',
+                        }}
+                    >
+                        3
+                    </span>
+                )
             default:
-                return <span className="w-6 h-6 flex items-center justify-center text-slate-500 dark:text-gray-400 font-bold">{rank}</span>
+                return <span className="flex items-center justify-center text-slate-500 dark:text-gray-400 font-bold">{rank}</span>
         }
     }
 

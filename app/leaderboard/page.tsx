@@ -4,16 +4,24 @@ import LeaderboardClient from './LeaderboardClient'
 export default async function LeaderboardPage() {
     const supabase = await createClient()
 
+    // DEBUG: Check environment variables
+    console.log('=== DEBUG: Leaderboard Page ===')
+    console.log('SUPABASE_URL:', process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 30) + '...')
+    console.log('ANON_KEY exists:', !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+
     // Fetch all exercises for the dropdown filter
-    const { data: exercises } = await supabase
+    const { data: exercises, error: exercisesError } = await supabase
         .from('exercises')
         .select('id, name')
         .order('name')
 
+    console.log('Exercises query result:', { count: exercises?.length, error: exercisesError?.message })
+    console.log('Exercises data:', exercises)
+
     // Fetch leaderboard data - each exercise result as individual entry
     // Join exercise_results -> sessions -> patients -> users to get patient names
     // Join exercise_results -> exercises to get exercise names
-    const { data: exerciseResults } = await supabase
+    const { data: exerciseResults, error: resultsError } = await supabase
         .from('exercise_results')
         .select(`
             id,
@@ -31,6 +39,8 @@ export default async function LeaderboardPage() {
             )
         `)
         .order('accuracy', { ascending: false })
+
+    console.log('Exercise results query:', { count: exerciseResults?.length, error: resultsError?.message })
 
     // Transform data into leaderboard entries (no aggregation - each result is separate)
     const leaderboardData = (exerciseResults || []).map(result => {
