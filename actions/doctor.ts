@@ -198,7 +198,7 @@ export async function createPatient(formData: FormData) {
             weekly_target: ex.weeklyTarget,
         }))
 
-        const { error: programError } = await adminSupabase
+        const { error: programError } = await supabase
             .from('programs')
             .insert(programEntries as any)
 
